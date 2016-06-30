@@ -8,6 +8,8 @@
 void printArray(int *, int length);
 //check whether a card number is valid
 int validCheck(int *);
+// confirm the type of card
+void cardTypeCheck(int *);
 
 int main(void){
     
@@ -31,33 +33,8 @@ int main(void){
     //printf("i = %d\n", i);
     //printArray(digit, MAX_CARD_LENGTH);
     
-    /* visa 13 or 16 digits
-       AMEX 15 digits
-       MasterCard 16 digits 
-    */
-    // checking if the last digits is zero(valid) and it starts with digit 4
-    if(validCheck(digit) == VALID){
-        // 13 digits starts with 4 (must be visa)
-        if(digit[0] == 0 && digit[1] == 0 && digit[2] == 0 && digit[3] == 4){
-            printf("VISA\n");
-        }
-        // 15 digits starts with 34 or 37 (must be AMEX)
-        else if(digit[0] == 0 && digit[1]  == 3 && (digit[2] == 4 || digit[2] == 7)){
-            printf("AMEX\n");    
-        }
-        // 16 digits (could be MasterCard or Visa)
-        else if(digit[0]!=0){
-            if(digit[0] == 4){
-                printf("VISA\n");
-            }
-            else if(digit[0] == 5 && (digit[1] == 1 || digit[1] == 2 || digit[1] == 3 || digit[1] == 4 || digit[1]==5)){
-                printf("MASTERCARD\n");
-            }
-        }
-    }
-    else {
-        printf("INVALID\n");
-    }
+    // check the card and print the result out
+    cardTypeCheck(digit);
     
     return 0;
 }
@@ -120,13 +97,42 @@ int validCheck(int *set){
         } 
         //printf("odd sum = %d\n", odd_digit_sum);        
     }
-    
+    // checking if the last digits is zero(valid)
     if((even_digit_sum + odd_digit_sum) % 10 == 0){
         return VALID;
     }
     else {
         return NOT_VALID;
     }
+}
+
+void cardTypeCheck(int *set){
+        /* visa 13 or 16 digits
+           AMEX 15 digits
+           MasterCard 16 digits 
+        */
+        if(validCheck(set) == VALID){
+        // 13 digits starts with 4 (must be visa)
+        if(set[0] == 0 && set[1] == 0 && set[2] == 0 && set[3] == 4){
+            printf("VISA\n");
+        }
+        // 15 digits starts with 34 or 37 (must be AMEX)
+        else if(set[0] == 0 && set[1]  == 3 && (set[2] == 4 || set[2] == 7)){
+            printf("AMEX\n");    
+        }
+        // 16 digits (could be MasterCard or Visa)
+        else if(set[0]!=0){
+            if(set[0] == 4){
+                printf("VISA\n");
+            }
+            else if(set[0] == 5 && (set[1] == 1 || set[1] == 2 || set[1] == 3 || set[1] == 4 || set[1]==5)){
+                printf("MASTERCARD\n");
+            }
+        }
+    }
+    else {
+        printf("INVALID\n");
+    }    
 }
 
 // debugging
