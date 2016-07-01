@@ -6,7 +6,7 @@
 
 #define MAX_LETTERS 26
 
-void encrypt(string, int key);
+string encrypt(string, int key);
 void printOutputMessage(string, int length);
 
 int main(int argc, string argv[]){
@@ -24,13 +24,13 @@ int main(int argc, string argv[]){
         k -= MAX_LETTERS;    
     }
 
-    encrypt(in_text,k);
-    printOutputMessage(in_text, strlen(in_text));
+    string out_text = encrypt(in_text,k);
+    printOutputMessage(out_text, strlen(in_text));
     
     return 0;
 }
 
-void encrypt(string in_text, int key){
+string encrypt(string in_text, int key){
     int i;
     int n;
     for(i = 0, n = strlen(in_text); i<n; i++){
@@ -57,7 +57,8 @@ void encrypt(string in_text, int key){
             }
         }
         
-    } 
+    }
+    return in_text;
 }
 
 void printOutputMessage(string out_text, int length){
