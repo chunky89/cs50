@@ -6,7 +6,6 @@
 
 #define MAX_LETTERS 26
 
-int getKey(void);
 void encrypt(string, int key);
 void printOutputMessage(string, int length);
 
