@@ -8,7 +8,6 @@ int main(void){
     
     if(isalpha(s[0])){
         printf("%c", toupper(s[0]));
-        //printf("11111\n");
     }
     
     // Be careful about the boundary
