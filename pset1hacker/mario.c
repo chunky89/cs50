@@ -20,10 +20,10 @@ int main(void){
     j = n;
     for(i = 1; i<=n; i++){
         print(j-1,'b');
-        print(i+1,'h');
+        print(i,'h');
         print(GAP, 'b');
-        print(i+1,'h');
-        print(j-1,'b');
+        print(i,'h');
+        //print(j-1,'b');
         printf("\n");
         j--;
     }

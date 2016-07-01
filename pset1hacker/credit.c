@@ -97,6 +97,9 @@ int validCheck(int *set){
         } 
         //printf("odd sum = %d\n", odd_digit_sum);        
     }
+    else {
+        return NOT_VALID;
+    }
     // checking if the last digits is zero(valid)
     if((even_digit_sum + odd_digit_sum) % 10 == 0){
         return VALID;
