@@ -18,8 +18,9 @@
 int attack(string potential_password, string salt, string encrypted);
 //This function tries every word in file located in "location" using attack(...)
 int searchList(FILE *f, string location, string salt, string encrypted);
-
+//This function crack the password by trying every combination
 int bruteForceAttack(string salt, string encrypted);
+//Helper function of brute force routine
 void incrementChar(char string[], int index);
 
 int main(int argc, string argv[]){
@@ -103,7 +104,7 @@ int searchList(FILE *f, string location, string salt, string encrypted){
 }
 
 int bruteForceAttack(string salt, string encrypted){
-    char test[MAX_PASSWORD_LENGTH +1] = { '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
+    char test[MAX_PASSWORD_LENGTH +1] = {0};
 
     do
     {
