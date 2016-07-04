@@ -24,17 +24,26 @@
 
 int main(int argc, string argv[])
 {
-    // TODO: comment me
+    /*
+    This if statement checks the command line argument is not 2 and 3,
+    making sure that the program can be executed normally.
+    */
     if (argc != 2 && argc != 3)
     {
         printf("Usage: generate n [s]\n");
         return 1;
     }
 
-    // TODO: comment me
+    // this line converts the string argv[1] to an int 
     int n = atoi(argv[1]);
 
-    // TODO: comment me
+    /*
+    If there are 3 command line arguments, meaning the optional
+    argument has been hit. We need to "seed" the random number
+    using the "number" (after atoi) entered by users.
+    
+    Otherwise, it generates the random number for "seed" from 0 to current calendar time
+    */
     if (argc == 3)
     {
         srand48((long int) atoi(argv[2]));
@@ -44,7 +53,7 @@ int main(int argc, string argv[])
         srand48((long int) time(NULL));
     }
 
-    // TODO: comment me
+    // generate 10 seed random number
     for (int i = 0; i < n; i++)
     {
         printf("%i\n", (int) (drand48() * LIMIT));
