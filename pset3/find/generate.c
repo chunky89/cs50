@@ -27,6 +27,7 @@ int main(int argc, string argv[])
     /*
     This if statement checks the command line argument is not 2 and 3,
     making sure that the program can be executed normally.
+    Otherwise, throw user a message for correct usage and return with ERROR.
     */
     if (argc != 2 && argc != 3)
     {
@@ -42,7 +43,10 @@ int main(int argc, string argv[])
     argument has been hit. We need to "seed" the random number
     using the "number" (after atoi) entered by users.
     
-    Otherwise, it generates the random number for "seed" from 0 to current calendar time
+    Otherwise, argc = 2. (no seed is required)it generates the random number for 
+    "seed" from 0 to current calendar time. Since the time is always changing, 
+    meaning that the seed will be different, resulting the following drand(48) 
+    (seeding random number is different).
     */
     if (argc == 3)
     {
@@ -53,7 +57,7 @@ int main(int argc, string argv[])
         srand48((long int) time(NULL));
     }
 
-    // generate 10 seed random number
+    // generate 10 seed random numbers
     for (int i = 0; i < n; i++)
     {
         printf("%i\n", (int) (drand48() * LIMIT));
