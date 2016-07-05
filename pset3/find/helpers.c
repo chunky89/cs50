@@ -65,6 +65,11 @@ bool binarySearch(int value, int values[], int n){
     return false;
 }
 
+bool binarySearchRecur(int value, int values, int n, int start, int end){
+    // TODO
+    return false;
+}
+
 /**
  * Sorts array of n values.
  */
