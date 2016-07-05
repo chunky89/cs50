@@ -14,7 +14,19 @@
  */
 bool search(int value, int values[], int n);
 
+bool linearSearch(int value, int values[], int n);
+bool binarySearch(int value, int values[], int n);
+
+
 /**
  * Sorts array of n values.
  */
 void sort(int values[], int n);
+
+void selectionSort(int values[], int n);
+void bubbleSort(int values[], int n);
+void insertionSort(int values[], int n);
+// this function swaps the value of array indexed by index1 and index2
+void swap(int values[], int index1, int index2);
+// for debugging
+void printArray(int values[], int n);
