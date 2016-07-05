@@ -47,7 +47,7 @@ bool binarySearch(int value, int values[], int n){
     }
     
     while(start <= end){
-        printf("mid_point = %d\n", mid_point);
+        
         if(values[mid_point] == value){
             return true;
         }
