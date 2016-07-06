@@ -18,7 +18,7 @@ bool linearSearch(int value, int values[], int n);
 // iterative version of binary search
 bool binarySearch(int value, int values[], int n);
 // recursive version of binary search
-bool binarySearchRecur(int value, int values, int n, int start, int end);
+bool binarySearchRecur(int value, int values[], int n, int start, int end);
 
 
 /**

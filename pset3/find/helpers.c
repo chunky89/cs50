@@ -20,7 +20,10 @@ bool search(int value, int values[], int n)
     // TODO: implement a searching algorithm
     //return linearSearch(value, values, n);
     return binarySearch(value, values, n);
+    //int start = 0;
+    //int end = n-1;
     
+    //return binarySearchRecur(value, values, n, start, end);
 }
 
 bool linearSearch(int value, int values[], int n){
@@ -65,8 +68,27 @@ bool binarySearch(int value, int values[], int n){
     return false;
 }
 
-bool binarySearchRecur(int value, int values, int n, int start, int end){
-    // TODO
+bool binarySearchRecur(int value, int values[], int n, int start, int end){
+    // calculate the mid point
+    int mid_point = (start+end)/2;
+    // calculate the size of (sub)array
+    n = end - start+1;
+    
+    if(n <= 0){
+        return false;
+    }
+    
+    if(value == values[mid_point]){
+        return true;
+    }
+    else if(value > values[mid_point]){
+        return binarySearchRecur(value, values, n, mid_point+1, end);
+    }
+    else if(value < values[mid_point]){
+        return binarySearchRecur(value, values, n, start, mid_point-1);
+    }
+    
+    // if reached here, not found.
     return false;
 }
 
