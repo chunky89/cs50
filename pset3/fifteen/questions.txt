@@ -3,7 +3,7 @@ questions.txt
 Computer Science 50
 Problem Set 3
 
-0. TODO
-1. TODO
-2. TODO
-3. TODO
+0. The framework allows the dimensions be between 3 x 3 and 9 x 9, inclusive.
+1. The game is used a two-dimensional array to represent the board.
+2. greet() is called to greet the player at game’s start.
+3. init(), draw(), move(), won() apparently need to be implemented.

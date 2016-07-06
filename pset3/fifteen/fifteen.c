@@ -26,6 +26,13 @@
 #define DIM_MIN 3
 #define DIM_MAX 9
 
+/* ASCII value of underscore
+ * Since the max dimension is 9, the largest
+ number involved will be only 80, hence it is
+ safe to choose 95.
+**/
+#define EMPTY_TILE '_'
+
 // board
 int board[DIM_MAX][DIM_MAX];
 
@@ -39,6 +46,17 @@ void init(void);
 void draw(void);
 bool move(int tile);
 bool won(void);
+
+/**
+ * return true if the number is even,
+   false otherwise.
+**/
+bool isEven(int n);
+/** this function swaps the two numbers indexed by index 1
+ * and index 2, located in the last row of a TWO_dimensional
+   array.
+**/
+void swap(int index1, int index2);
 
 int main(int argc, string argv[])
 {
@@ -66,7 +84,7 @@ int main(int argc, string argv[])
     }
 
     // greet user with instructions
-    greet();
+    //greet();
 
     // initialize the board
     init();
@@ -159,7 +177,26 @@ void greet(void)
  */
 void init(void)
 {
-    // TODO
+    //TODO
+    int i;
+    int j;
+    int to_fill = d*d-1;
+    
+    for(i = 0; i<d; i++){
+        for(j = 0; j<d; j++){
+            board[i][j] = to_fill;
+            to_fill--;
+        }
+    }
+    //overwrite the last number with empty title character
+    board[d-1][d-1] = EMPTY_TILE;
+    
+    //if odd number of tiles(even number dimension)
+    if(isEven(d)){
+        //swap "1" and "2"
+        swap(d-2,d-3);
+    }
+    
 }
 
 /**
@@ -168,6 +205,20 @@ void init(void)
 void draw(void)
 {
     // TODO
+    int i;
+    int j;
+    
+    for(i = 0; i<d; i++){
+        for(j = 0; j<d; j++){
+            if(i == d-1 && j == d-1){
+                printf("%2c ", board[i][j]);
+            }
+            else {
+                printf("%2d ", board[i][j]);    
+            }
+        }
+    printf("\n");
+    }
 }
 
 /**
@@ -188,4 +239,16 @@ bool won(void)
 {
     // TODO
     return false;
+}
+
+bool isEven(int n)
+{
+    return (n % 2 == 0);
+}
+
+void swap(int index1, int index2)
+{
+    int temp = board[d-1][index1];
+    board[d-1][index1] = board[d-1][index2];
+    board[d-1][index2] = temp;
 }
