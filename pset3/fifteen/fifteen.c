@@ -217,7 +217,7 @@ void draw(void)
                 printf("%2d ", board[i][j]);    
             }
         }
-    printf("\n");
+    printf("\n\n");
     }
 }
 
