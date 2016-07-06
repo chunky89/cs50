@@ -39,6 +39,10 @@ int board[DIM_MAX][DIM_MAX];
 // dimensions
 int d;
 
+//location of empty tile
+int empty_tile_x;
+int empty_tile_y;
+
 // prototypes
 void clear(void);
 void greet(void);
@@ -57,6 +61,7 @@ bool isEven(int n);
  * with corrdinate (x1, y1) and (x2,y2)
 **/
 void swap(int x1, int y1, int x2, int y2);
+bool search(int n);
 
 int main(int argc, string argv[])
 {
@@ -88,7 +93,7 @@ int main(int argc, string argv[])
 
     // initialize the board
     init();
-
+    
     // accept moves until game is won
     while (true)
     {
@@ -191,6 +196,9 @@ void init(void)
     //overwrite the last number with empty title character
     board[d-1][d-1] = EMPTY_TILE;
     
+    empty_tile_x = d-1;
+    empty_tile_y = d-1;
+    
     //if odd number of tiles(even number dimension)
     if(isEven(d)){
         //swap "1" and "2"
@@ -211,8 +219,9 @@ void draw(void)
     
     for(i = 0; i<d; i++){
         for(j = 0; j<d; j++){
-            if(i == d-1 && j == d-1){
-                printf("%2c ", board[i][j]);
+            if(board[i][j] == EMPTY_TILE){
+                //printf("%2c ", board[i][j]);
+                printf("%2c", EMPTY_TILE);
             }
             else {
                 printf("%2d ", board[i][j]);    
@@ -229,6 +238,10 @@ void draw(void)
 bool move(int tile)
 {
     // TODO
+    
+    /**
+     * A legal move is any tile that is adjacent to the empty tile
+    */
     return false;
 }
 
@@ -252,4 +265,18 @@ void swap(int x1, int y1, int x2, int y2)
     int temp = board[x1][y1];
     board[x1][y1] = board[x2][y2];
     board[x2][y2] = temp;
+}
+
+bool search(int n){
+    int i;
+    int j;
+    
+    for(i = 0; i<d; i++){
+        for(j = 0; j<d; j++){
+            if(board[i][j] == n){
+                return true;
+            }
+        }
+    }
+    return false;
 }
