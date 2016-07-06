@@ -52,11 +52,11 @@ bool won(void);
    false otherwise.
 **/
 bool isEven(int n);
-/** this function swaps the two numbers indexed by index 1
- * and index 2, located in the last row of a TWO_dimensional
-   array.
+/** 
+ * this function swaps the two numbers in 2-D array
+ * with corrdinate (x1, y1) and (x2,y2)
 **/
-void swap(int index1, int index2);
+void swap(int x1, int y1, int x2, int y2);
 
 int main(int argc, string argv[])
 {
@@ -194,7 +194,8 @@ void init(void)
     //if odd number of tiles(even number dimension)
     if(isEven(d)){
         //swap "1" and "2"
-        swap(d-2,d-3);
+        swap(d-1,d-2,d-1,d-3);
+        
     }
     
 }
@@ -246,9 +247,9 @@ bool isEven(int n)
     return (n % 2 == 0);
 }
 
-void swap(int index1, int index2)
+void swap(int x1, int y1, int x2, int y2)
 {
-    int temp = board[d-1][index1];
-    board[d-1][index1] = board[d-1][index2];
-    board[d-1][index2] = temp;
+    int temp = board[x1][y1];
+    board[x1][y1] = board[x2][y2];
+    board[x2][y2] = temp;
 }
