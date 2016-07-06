@@ -55,6 +55,7 @@ int main(int argc, string argv[]){
     }
     printf("\n");
     
+    // if you want to use binary search, must sort the array first
     sort(haystack, size);
     
     // try to find needle in haystack
