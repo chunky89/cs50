@@ -103,6 +103,9 @@ int searchList(FILE *f, string location, string salt, string encrypted){
     return UNCRACKED;
 }
 
+// Since the strcmp function in attack() stops when it hits a null character in string, 
+// A string of null characters is initialized. Then, a helpful function is created to 
+// increment that string through the ASCII table as if it were a number and check each string.
 int bruteForceAttack(string salt, string encrypted){
     char test[MAX_PASSWORD_LENGTH +1] = {0};
 
@@ -111,14 +114,13 @@ int bruteForceAttack(string salt, string encrypted){
         // Compares until next null character
         if (attack(test, salt, encrypted) == CRACKED)
         {
-            // Print password
-            //printf("%s\n", test);
             return CRACKED;
         }
 
         // Increment letter
         incrementChar(test, 0);
     }
+    // until all combinations are tried
     while (test[MAX_PASSWORD_LENGTH] == '\0');
     
     return UNCRACKED;
