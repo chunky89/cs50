@@ -21,7 +21,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-//#include <math.h>
 
 // constants
 #define DIM_MIN 3
@@ -32,7 +31,7 @@
  number involved will be only 80, hence it is
  safe to choose 95.
 **/
-#define EMPTY_TILE 0
+#define EMPTY_TILE '_'
 
 // board
 int board[DIM_MAX][DIM_MAX];
@@ -80,7 +79,7 @@ int main(int argc, string argv[])
     }
 
     // open log
-    FILE* file = fopen("log.txt", "w");
+    FILE* file = fopen("log-2.txt", "w");
     if (file == NULL)
     {
         return 3;
@@ -230,7 +229,7 @@ void draw(void)
         for(j = 0; j<d; j++){
             if(board[i][j] == EMPTY_TILE){
                 //printf("%2c ", board[i][j]);
-                printf("%2d ", EMPTY_TILE);
+                printf("%2c ", EMPTY_TILE);
             }
             else {
                 printf("%2d ", board[i][j]);    
@@ -278,31 +277,21 @@ bool won(void)
     // TODO
     int i;
     int j;
-    
-    int previous = board[0][0];
-    for (i = 0; i < d; i++){
-        for (j = 0; j < d; j++){
-            if(i == d-1 && j == d-1){
-                /** if reached here, force previous value to be some dummy values
-                 * since we only need to check whether the the last element is zero(empty tile)
-                **/
-                previous = -1;
-                if(board[i][j] != EMPTY_TILE){
-                    return false;
-                }
+    //int number_in_place = 1;
+    ///* this is used when the EMPTY_TILE is set as '_'(or ASCII 95)
+    for(i = 0; i< d; i++){
+        for(j = 0; j<d-1; j++){
+            if(board[i][j] > board[i][j+1]||
+            board[j][i] > board[j+1][i]){
+                return false;        
             }
-            /**
-             * cannot have equal sign here, because in board[0][0] will be equal to previous,
-             * then the whole function is finished.
-            **/
-            if (previous > board[i][j]){
-                return false;
-            }
-            previous = board[i][j];
         }
     }
-    return true;
-
+    if(empty_tile_x == d-1 && empty_tile_y == d-1){
+         return true;
+    }
+    
+    return false;
 }
 
 /**
