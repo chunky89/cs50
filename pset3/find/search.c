@@ -6,7 +6,7 @@
 const int MAX = 65536;
 
 /*
- * Various storing algorithms
+ * Various sorting algorithms
 **/
 void sort(int values[], int n);
 void selectionSort(int values[], int n);

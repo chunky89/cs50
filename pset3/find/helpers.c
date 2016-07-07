@@ -97,7 +97,8 @@ bool binarySearchRecur(int value, int values[], int n, int start, int end){
  */
 void sort(int values[], int n)
 {
-    // TODO: implement an O(n^2) sorting algorithm
+    // TODO: implement an O(n) sorting algorithm
+    
     selectionSort(values, n);
     //bubbleSort(values, n);
     //insertionSort(values, n);

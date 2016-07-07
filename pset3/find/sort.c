@@ -13,6 +13,9 @@ void sort(int values[], int n);
 void selectionSort(int values[], int n);
 void bubbleSort(int values[], int n);
 void insertionSort(int values[], int n);
+
+// TODO: implement an O(n) sorting algorithm
+
 // this function swaps the value of array indexed by index1 and index2
 void swap(int values[], int index1, int index2);
 // for debugging
