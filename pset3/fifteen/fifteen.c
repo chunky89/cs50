@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <math.h>
 
 // constants
 #define DIM_MIN 3
@@ -43,6 +44,10 @@ int d;
 int empty_tile_x;
 int empty_tile_y;
 
+//location of normal tile
+int tile_x;
+int tile_y;
+
 // prototypes
 void clear(void);
 void greet(void);
@@ -51,17 +56,10 @@ void draw(void);
 bool move(int tile);
 bool won(void);
 
-/**
- * return true if the number is even,
-   false otherwise.
-**/
 bool isEven(int n);
-/** 
- * this function swaps the two numbers in 2-D array
- * with corrdinate (x1, y1) and (x2,y2)
-**/
 void swap(int x1, int y1, int x2, int y2);
-bool search(int n);
+bool search(int tile);
+bool isAdjacent(int tile);
 
 int main(int argc, string argv[])
 {
@@ -89,10 +87,23 @@ int main(int argc, string argv[])
     }
 
     // greet user with instructions
-    //greet();
+    greet();
 
     // initialize the board
     init();
+    
+    // debug
+    /*
+    int test = 2;
+    if(isAdjacent(test)){
+        printf("location of %d is [%d, %d]\n", test, tile_x, tile_y);
+        printf("%d is adjacent to empty tile\n", test);
+    }
+    else{
+        printf("location of %d is [%d, %d]\n", test, tile_x, tile_y);
+        printf("%d is not adjacent to empty tile\n", test);
+    }
+    */
     
     // accept moves until game is won
     while (true)
@@ -203,9 +214,7 @@ void init(void)
     if(isEven(d)){
         //swap "1" and "2"
         swap(d-1,d-2,d-1,d-3);
-        
     }
-    
 }
 
 /**
@@ -221,7 +230,7 @@ void draw(void)
         for(j = 0; j<d; j++){
             if(board[i][j] == EMPTY_TILE){
                 //printf("%2c ", board[i][j]);
-                printf("%2c", EMPTY_TILE);
+                printf("%2c ", EMPTY_TILE);
             }
             else {
                 printf("%2d ", board[i][j]);    
@@ -238,10 +247,25 @@ void draw(void)
 bool move(int tile)
 {
     // TODO
-    
     /**
      * A legal move is any tile that is adjacent to the empty tile
     */
+    int temp1 = 0;
+    int temp2 = 0;
+    if(isAdjacent(tile)){
+        // allow moving
+        // 1. swap the empty tile and tile
+        swap(empty_tile_x,empty_tile_y, tile_x,tile_y);
+        // 2. update the location of empty tile and normal tile
+        temp1 = empty_tile_x;
+        temp2 = empty_tile_y;
+        empty_tile_x = tile_x;
+        empty_tile_y = tile_y;
+        tile_x = temp1;
+        tile_y = temp2;
+        
+        return true;
+    }
     return false;
 }
 
@@ -252,30 +276,81 @@ bool move(int tile)
 bool won(void)
 {
     // TODO
+    int i;
+    int j;
+    
+    for(i = 0; i< d; i++){
+        for(j = 0; j<d-1; j++){
+            if(board[i][j] >= board[i][j+1]||
+            board[j][i] >= board[j+1][i]){
+                return false;        
+            }
+        }
+    }
+    if(empty_tile_x == d-1 && empty_tile_y == d-1){
+        return true;
+    }
+    
     return false;
 }
 
+/**
+ * return true if the number is even,
+   false otherwise.
+**/
 bool isEven(int n)
 {
     return (n % 2 == 0);
 }
 
+/** 
+ * this function swaps the two numbers in 2-D array
+ * with corrdinate (x1, y1) and (x2,y2)
+**/
 void swap(int x1, int y1, int x2, int y2)
 {
     int temp = board[x1][y1];
     board[x1][y1] = board[x2][y2];
     board[x2][y2] = temp;
 }
-
-bool search(int n){
-    int i;
-    int j;
+/**
+ * search for a tile, explicitly return true if found
+ * it, false otherwise. Implicitly return the location
+ * of the tile by passing the indices to tile_x and tile_y
+**/
+bool search(int tile)
+{
+    int i = 0;
+    int j = 0;
     
     for(i = 0; i<d; i++){
         for(j = 0; j<d; j++){
-            if(board[i][j] == n){
+            if(board[i][j] == tile){
+                tile_x = i;
+                tile_y = j;
                 return true;
             }
+        }
+    }
+    return false;
+}
+
+/**
+ * check whether a tile is adjacent to empty tile
+ * return true if it is, false otherwise.
+**/
+bool isAdjacent(int tile)
+{
+    // not found the prescribed tile
+    if(!search(tile)){
+        return false;    
+    }
+    else{
+        //compare the location of tile and location of empty tile
+        if((abs(tile_x - empty_tile_x) == 1 && tile_y == empty_tile_y)||
+           (abs(tile_y - empty_tile_y) == 1 && tile_x == empty_tile_x)){
+            // adjacent
+            return true;
         }
     }
     return false;
