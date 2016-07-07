@@ -283,10 +283,6 @@ bool won(void)
     for (i = 0; i < d; i++){
         for (j = 0; j < d; j++){
             if(i == d-1 && j == d-1){
-                /** if reached here, force previous value to be some dummy values
-                 * since we only need to check whether the the last element is zero(empty tile)
-                **/
-                previous = -1;
                 if(board[i][j] != EMPTY_TILE){
                     return false;
                 }
@@ -295,7 +291,7 @@ bool won(void)
              * cannot have equal sign here, because in board[0][0] will be equal to previous,
              * then the whole function is finished.
             **/
-            if (previous > board[i][j]){
+            else if (previous > board[i][j]){
                 return false;
             }
             previous = board[i][j];
