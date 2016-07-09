@@ -181,14 +181,24 @@ void insertionSort(int values[], int n){
 }
 
 void countingSort(int values[], int n){
-    //count the number of occurence in the array
-    int count[n];
+    //determine the size of the count array
+    int max = values[0];
+    for(int i = 0; i<n; i++){
+        if(values[i]>=max){
+            max = values[i];
+        }
+    }
+    //one extra space for 0
+    int size = max+1;
+    //allocate the count array
+    int count[size]; 
     //used to construct the new sorted array
     int construct_pointer = 0;
     // keep track of the number of duplicates
     int counter = 0;
+    
     //initilize the array
-    for(int i = 0; i<n; i++){
+    for(int i = 0; i<max+1; i++){
         count[i] = 0;
     }
     // count the occurence
@@ -197,9 +207,8 @@ void countingSort(int values[], int n){
             count[values[j]]++;
         }
     }
-    
     // construct the new array
-    for(int i = 0; i<n; i++){
+    for(int i = 0; i<size; i++){
         counter = count[i];
         while(counter != 0){
             values[construct_pointer] = i;
