@@ -53,7 +53,7 @@ int main(int argc, string argv[])
 
     // sort the haystack
     sort(haystack, size);
-
+    
     // try to find needle in haystack
     if (search(needle, haystack, size))
     {

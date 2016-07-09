@@ -10,12 +10,13 @@
 const int MAX = 65536;
 
 void sort(int values[], int n);
+// O(n^2) sorting algorithm
 void selectionSort(int values[], int n);
 void bubbleSort(int values[], int n);
 void insertionSort(int values[], int n);
 
-// TODO: implement an O(n) sorting algorithm
-
+// O(n) sorting algorithm
+void countingSort(int values[], int n);
 // this function swaps the value of array indexed by index1 and index2
 void swap(int values[], int index1, int index2);
 // for debugging
@@ -59,8 +60,9 @@ void sort(int values[], int n)
     // TODO: implement an O(n^2) sorting algorithm
     
     //selectionSort(values,n);
-    bubbleSort(values, n);
+    //bubbleSort(values, n);
     //insertionSort(values,n);
+    countingSort(values, n);
     return;
 }
 
@@ -149,4 +151,32 @@ void insertionSort(int values[], int n){
         values[curr_pos] = temp;
     }
     return;
+}
+
+void countingSort(int values[], int n){
+    //count the number of occurence in the array
+    int count[n];
+    //used to construct the new sorted array
+    int construct_pointer = 0;
+     // keep track of the number of duplicates
+    int counter = 0;
+    //initilize the array
+    for(int i = 0; i<n; i++){
+        count[i] = 0;
+    }
+    // count the occurence
+    for(int j = 0; j<n; j++){
+        if(values[j] >= 0){
+            count[values[j]]++;
+        }
+    }
+    // construct the new array
+    for(int i = 0; i<n; i++){
+        counter = count[i];
+        while(counter != 0){
+            values[construct_pointer] = i;
+            construct_pointer++;
+            counter--;
+        }
+    }
 }
