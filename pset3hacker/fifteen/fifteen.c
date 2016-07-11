@@ -15,6 +15,8 @@
  * sleep and is simpler to use than nanosleep; `man usleep` for more.
  */
  
+// don't forget to come back later for the GOD mode of this game!
+ 
 #define _XOPEN_SOURCE 500
 
 #include <cs50.h>
