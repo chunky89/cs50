@@ -39,6 +39,10 @@ int main(int argc, string argv[]){
       deliberately add one more character for string terminator
     */
     char salt[LENGTH_OF_SALT+1] = {0};
+    if(strlen(encrypted)!=13){
+        // length of encrypted text must be 13, else return error
+        return 1;
+    }
     strncpy(salt, encrypted, LENGTH_OF_SALT);
     //printf("%s\n", salt);
     //printf("%d\n", attack("hello", salt, "heFw0NKyvGSTg"));
