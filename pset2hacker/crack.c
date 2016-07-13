@@ -29,6 +29,10 @@ int main(int argc, string argv[]){
         printf("invalid input\n"); // yelling 
         return 1;    
     }
+    
+    if(argv[1] == NULL){
+        return 1;
+    }
     // get the encrypted text
     string encrypted = argv[1];
     /*the salt is the first two letters in the encrypted text
