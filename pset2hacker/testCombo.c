@@ -4,7 +4,7 @@
  
 int letterCounter[8];
 char validCharacters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890!@#$%^&*()_+[]{}:;<>,./?'";
-char bruteString[9];  // One more to null terminate.
+char bruteString[9]; // One more to null terminate.
  
 bool evaluateString(char *testString)
 {
