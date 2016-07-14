@@ -10,9 +10,13 @@
 #define LENGTH_OF_SALT 2
 #define MAX_WORD_LENGTH 1024
 #define MAX_PASSWORD_LENGTH 8
-#define CRACKED 1
-#define UNCRACKED 0
+// DES encrypted text will always be length of 13
+#define LENGTH_OF_ENCRYPTED_TEXT 13
 
+
+int letterCounter[8];
+char validCharacters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890!@#$%^&*()_+[]{}:;<>,./?'";
+char bruteString[9];  // One more to null terminate.
 
 //This function calls crypt() and check whether the encrypted texts are matched
 int attack(string potential_password, string salt, string encrypted);
@@ -20,8 +24,6 @@ int attack(string potential_password, string salt, string encrypted);
 int searchList(FILE *f, string location, string salt, string encrypted);
 //This function crack the password by trying every combination
 int bruteForceAttack(string salt, string encrypted);
-//Helper function of brute force routine
-void incrementChar(char string[], int index);
 
 int main(int argc, string argv[]){
     
@@ -39,11 +41,12 @@ int main(int argc, string argv[]){
       deliberately add one more character for string terminator
     */
     char salt[LENGTH_OF_SALT+1] = {0};
-    if(strlen(encrypted)!=13){
+    if(strlen(encrypted)!= LENGTH_OF_ENCRYPTED_TEXT){
         // length of encrypted text must be 13, else return error
         return 1;
     }
     strncpy(salt, encrypted, LENGTH_OF_SALT);
+    /* debugging */
     //printf("%s\n", salt);
     //printf("%d\n", attack("hello", salt, "heFw0NKyvGSTg"));
     //read_words(f);
@@ -77,12 +80,12 @@ int main(int argc, string argv[]){
     printf("Crack by searching failed.\n");
     printf("Cracking...\n");
     printf("Brute force coming up...\n");
-    
-    if(bruteForceAttack(salt, encrypted)){
+
+    if(bruteForceAttack(salt, encrypted) == true){
         return 0;    
     }
     
-    printf("Crack by brute force failed.");
+    printf("Crack by brute force failed.\n");
     return 0;
 }
 
@@ -92,9 +95,9 @@ int attack(string potential_password, string salt, string encrypted){
     if (ret == 0){
         printf("Cracking successful!\n");
         printf("Password is: %s\n", potential_password);
-        return CRACKED;
+        return true;
     }
-    return UNCRACKED;
+    return false;
 }
 
 int searchList(FILE *f, string location, string salt, string encrypted){
@@ -103,53 +106,84 @@ int searchList(FILE *f, string location, string salt, string encrypted){
     /* assumes no word exceeds length of 1023 */
     while (fscanf(f, " %1023s", x) == 1) {
         if(attack(x, salt, encrypted)){
-            return CRACKED;
+            return true;
         }
     }
     //printf("No word in dictionary matches the password\n");
     fclose(f);
-    return UNCRACKED;
+    return false;
 }
 
-// Since the strcmp function in attack() stops when it hits a null character in string, 
-// A string of null characters is initialized. Then, a helpful function is created to 
-// increment that string through the ASCII table as if it were a number and check each string.
 int bruteForceAttack(string salt, string encrypted){
-    char test[MAX_PASSWORD_LENGTH +1] = {0};
-
-    do
-    {
-        // Compares until next null character
-        if (attack(test, salt, encrypted) == CRACKED)
-        {
-            return CRACKED;
-        }
-
-        // Increment letter
-        incrementChar(test, 0);
-    }
-    // until all combinations are tried
-    while (test[MAX_PASSWORD_LENGTH] == '\0');
+    //char arr_chars[] = {"0123456789abcdefghijklmnopqrstuvwxyz"};
+    char arr_chars[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890!@#$%^&*()_+[]{}:;<>,./?'";
     
-    return UNCRACKED;
-}
-
-// Function to increment character and carry over if necessary
-void incrementChar(char string[], int index)  
-{
-    if (string[index] == '\0')
+    int arr_length = strlen(arr_chars);
+    
+    // one more place to null terminate
+    char cur_word[MAX_PASSWORD_LENGTH + 1] = {0};
+    //cur_word[MAX_PASSWORD_LENGTH] = '\0'; 
+    // use an array of 8 integers instead of eight separate integers for index value 
+    int pos[MAX_PASSWORD_LENGTH];
+    
+    // Outer loop - controls word length
+    for (int max_chars = 0; max_chars < MAX_PASSWORD_LENGTH; max_chars++)
     {
-        string[index] = '!';
+        printf("Trying potential passwords with length %d\n", max_chars + 1);
+        
+        // flag value for main brute force loop
+        bool loop_completed = false;
+        
+        // Initialize the word
+        int idx;
+        
+        for (idx = 0; idx <= max_chars; idx++)
+        {
+            pos[idx] = 0;
+            cur_word[idx] = arr_chars[pos[idx]];
+        }
+        
+        cur_word[idx] = '\0';
+    
+        // Main brute-force loop
+        // Ends when every symbol combination is checked
+        while (!loop_completed)
+        {
+            // Try current word
+            if (attack(cur_word, salt, encrypted))
+                return true;
+        
+            // One iteration of brute-force
+            bool shift = true;
+            
+            for (int cur_char = 0; cur_char <= max_chars; cur_char++)
+                // If shift - change character
+                if (shift)
+                {
+                    // If all character are done
+                    if (pos[cur_char] == arr_length - 1)
+                    {
+                        // If last symbol - loop is over
+                        if (cur_char == max_chars)
+                            loop_completed = true;
+                        // Change to first symbol again
+                        else
+                        {
+                            pos[cur_char] = 0;
+                            cur_word[cur_char] = arr_chars[pos[cur_char]];
+                        }
+                    }
+                    else
+                    {
+                        cur_word[cur_char] = arr_chars[++pos[cur_char]];
+                        
+                        shift = false;
+                    }
+                }
+        }
     }
-    else if (string[index] == '~')
-    {
-        string[index] = '!';
-        incrementChar(string, index + 1);
-    }
-    else
-    {
-        string[index]++;
-    }
+    
+    return false;
 }
 
 

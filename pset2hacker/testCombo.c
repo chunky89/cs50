@@ -4,7 +4,6 @@
  
 int letterCounter[8];
 char validCharacters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890!@#$%^&*()_+[]{}:;<>,./?'";
-//char validCharacters[] = "abc";
 char bruteString[9];  // One more to null terminate.
  
 bool evaluateString(char *testString)
@@ -31,11 +30,12 @@ int main()
 	for (int i = 0; i < maxDigits;i++)
 	{
 		letterCounter[i] = -1;		// Initialize them all to nill.
-		bruteString[i+1] = 0;		// Null terminate the string.
+		bruteString[i] = 0;		
 	}
+	bruteString[maxDigits-1] = 0;// Null terminate the string.
 	letterCounter[0] = 0;			// But we will initialize the first counter to 0.
+	
 	int wordLength = 0;
- 
 	while (true)
 	{
 		// First thing we do, is update the text string with the character that changed.
