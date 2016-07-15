@@ -80,14 +80,14 @@ int main(int argc, char* argv[])
             
             // read RGB triple from infile
             fread(&triple, sizeof(RGBTRIPLE), 1, inptr);
-            
+            // turn every "pure" red to white
             if(triple.rgbtBlue == 0x00 && triple.rgbtGreen == 0x00 && triple.rgbtRed == 0xff){
                 triple.rgbtBlue = 0xff;
                 triple.rgbtGreen = 0xff;
             }
             fwrite(&triple, sizeof(RGBTRIPLE), 1, outptr);
         }
-
+        
         // skip over padding, if any
         fseek(inptr, padding, SEEK_CUR);
 
@@ -97,7 +97,7 @@ int main(int argc, char* argv[])
             fputc(0x00, outptr);
         }
     }
-
+    
     // close infile
     fclose(inptr);
 
