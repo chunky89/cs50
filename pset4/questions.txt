@@ -1,0 +1,113 @@
+0.  How many different colors does each format support?
+	
+	BMP: 32 bits to represent colors, over 4 billion colors support.
+	GIF: 8 bits to represent colors, 256 colors support.
+	JPEG: 24 bits to represent colors, 16 million colors support.
+	PNG: 24 bits to represent colors, 16 million colors support.
+
+1.  Which of the formats supports animation?
+    
+    GIF.
+
+2.  What’s the difference between lossy and lossless compression? 
+    
+    With lossless compression, every single bit of data that was 
+    originally in the file remains after the file is uncompressed. 
+    All of the information is completely restored.
+    
+    On the other hand, lossy compression reduces a file by permanently
+    eliminating certain information, especially redundant information. 
+    When the file is uncompressed, only a part of the original information
+    is still there (although the user may not notice it).
+
+3.  Which of these formats is lossy-compressed?
+
+    JPEG.
+    
+4.  What happens, technically speaking, when a file is deleted on a FAT file system?
+
+When the operating system erases a FAT file, two things occur. 
+First, the system modifies the filename’s first character in the file’s directory entry 
+to signal that the file has  been deleted and that the directory entry can be recycled.
+Second, the system moves all of the file’s FAT clusters to the hard drive’s list of free 
+clusters. The actual file data is never touched. Indeed, there are many programs available 
+that can recover erased files.
+
+5.  What can someone like you do to ensure (with high probability) that files you delete cannot be recovered?
+    
+Delete files using a secure delete option. That replaces the section on disc with all zeroes.
+
+6.  What’s stdint.h ?      
+
+The <stdint.h> header shall declare sets of integer types having specified widths, and shall define 
+corresponding sets of macros. It shall also define macros that specify limits of integer types corresponding
+to types defined in other standard headers.
+
+7.  What’s the point of using uint8_t, uint32_t, int32_t, and uint16_t in a program?
+
+C has very loose definitions on its basic integer data types (char, short, int, long, and long long). 
+The language guarantees that they can represent at least some range of values, but any particular platform 
+(compiler, operating system, hardware) might be larger than that. A good example is long. On one machine, 
+it might be 32 bits (the minimum required by C). On another, it's 64 bits. So, what do you do if you want an 
+integer type that's precisely 32 bits long? That's where int32_t comes in: it's an alias for whatever integer 
+type your particular system has that is exactly 32 bits. uint32_t is the same, but for unsigned 32 bit values. 
+On one system, that might be unsigned int and on another unsigned long. It gives you the data type with specified width.
+
+8.  How many bytes is a BYTE, a DWORD, a LONG, and a WORD, respectively?
+
+BYTE = 8 bits = 1 byte
+DWORD= 32 bits = 4 bytes
+LONG = signed 32 bits = 4 bytes
+WORD = 16 bits = 2 bytes
+
+9.  What (in ASCII, decimal, or hexadecimal) must the first two bytes of any BMP file be?
+
+Hex:    0x424d
+ASCII:  BM (bitmap)
+
+10. What’s the difference between bfSize and biSize?
+
+bfSize is the total number of bytes in the file (246 for smiley.bmp).
+biSize is the number of bytes in the info header (40 for a bitmap).
+
+11. What does it mean if biHeight is negative?
+
+biHeight specifies the height of the bitmap, in pixels.
+For uncompressed RGB bitmaps, if biHeight is positive, the bitmap is a 
+bottom-up DIB with the origin at the lower left corner. If biHeight is 
+negative, the bitmap is a top-down DIB with the origin at the upper left corner.
+
+12. What field in BITMAPINFOHEADER specifies the BMP’s color depth (i.e., bits per pixel)?
+
+The biBitCount member of the BITMAPINFOHEADER structure determines the number of bits that 
+define each pixel and the maximum number of colors in the bitmap.
+
+13. Why might fopen return NULL in copy.c:37?
+
+it's possible for fopen to fail even if your program is perfectly correct: 
+you might try to open a file specified by the user, and that file might not exist 
+(or it might be write-protected). In those cases, fopen will return 0, the NULL pointer. 
+
+14. Why is the third argument to fread always 1 in our code?
+
+Because it specifies how many elements you want to read, and we're always
+reading a struct so we only need 1 struct.
+
+15. What value does copy.c:70 assign padding if bi.biWidth is 3?
+
+The padding would be 3, because 3 pixels * 3 bytes per pixel * 3 padding = 12,
+which is a multiple of 4.
+
+16. What does fseek do?
+
+Skips over any padding and looks for the next pixel (RGB triple)
+
+17. What is SEEK_CUR?
+
+An integer constant which, when used as the 'whence' argument to the
+fseek or fseeko function, specifies that the offset provided is relative to
+the current file position.
+
+18. Whodunit?
+
+
