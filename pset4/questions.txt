@@ -62,8 +62,9 @@ WORD = 16 bits = 2 bytes
 
 9.  What (in ASCII, decimal, or hexadecimal) must the first two bytes of any BMP file be?
 
-Hex:    0x424d
+Hex:    0x4d42
 ASCII:  BM (bitmap)
+Decimal: 19778
 
 10. What’s the difference between bfSize and biSize?
 
@@ -95,7 +96,7 @@ reading a struct so we only need 1 struct.
 
 15. What value does copy.c:70 assign padding if bi.biWidth is 3?
 
-The padding would be 3, because 3 pixels * 3 bytes per pixel * 3 padding = 12,
+The padding would be 3, because 3 pixels * 3 bytes per pixel + 3 bytes of padding = 12 bytes,
 which is a multiple of 4.
 
 16. What does fseek do?
