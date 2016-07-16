@@ -36,6 +36,7 @@ int main(int argc, char* argv[])
     // read infile's BITMAPFILEHEADER
     BITMAPFILEHEADER bf;
     fread(&bf, sizeof(BITMAPFILEHEADER), 1, inptr);
+    
     printf("bf.bfType = %d\n", bf.bfType);
     printf("bf.bfSize = %d\n", bf.bfSize);
     //read infile's BITMAPINFOHEADER
