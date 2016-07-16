@@ -1,10 +1,10 @@
 /**
- * copy.c
+ * whodunit.c
  *
  * Computer Science 50
  * Problem Set 4
  *
- * Copies a BMP piece by piece, just because.
+ * Recover a BMP piece by piece, just because.
  */
        
 #include <stdio.h>
