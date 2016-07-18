@@ -22,6 +22,7 @@ int main(int argc, char* argv[])
     }
 
     // remember filenames
+    int factor = atoi(argv[1]);
     char* infile = argv[2];
     char* outfile = argv[3];
 
@@ -66,7 +67,7 @@ int main(int argc, char* argv[])
     // determine padding for scanlines
     int padding =  (4 - (bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
     int new_padding =  (4 - (bi.biWidth * factor * sizeof(RGBTRIPLE)) % 4) % 4;
-    RGBTRIPLE temp[bi.biWidth*factor];
+    RGBTRIPLE temp[bi.biWidth*factor + new_padding];
     
     // iterate over infile's scanlines
     for (int i = 0, biHeight = abs(bi.biHeight); i < biHeight; i++)
@@ -90,7 +91,7 @@ int main(int argc, char* argv[])
         fseek(inptr, padding, SEEK_CUR);
 
         // then add it back (to demonstrate how)
-        for (int k = 0; k < padding; k++)
+        for (int k = 0; k < new_padding; k++)
         {
             fputc(0x00, outptr);
         }
