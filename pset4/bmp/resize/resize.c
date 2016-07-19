@@ -100,10 +100,10 @@ int main(int argc, char* argv[])
     // iterate over infile's scanlines
     for (int i = 0, biHeight = abs(bi.biHeight); i < biHeight; i++)
     {
-        
+        // read each scanline "factor" times
         for(int j = 0; j < factor; j++)
         {
-            // iterate over pixels in scanline
+            // iterate over pixels in scanline, read once, write "factor" times
             for (int k = 0; k < bi.biWidth; k++)
             {
                 // temporary storage
@@ -125,7 +125,7 @@ int main(int argc, char* argv[])
                 fputc(0x00, outptr);
             }
             
-            // move the cursor back to the beginning of the scanline
+            // move the cursor back to the beginning of the scanline, read it again
             if (j < factor - 1)
                 // only move the cursor factor -1 times
                 fseek(inptr,-(padding + sizeof(RGBTRIPLE)*bi.biWidth), SEEK_CUR);
