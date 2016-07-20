@@ -44,10 +44,8 @@ int main(int argc, char* argv[])
     }
     
     // while it is not end of the memory card(it can still read 512 bytes)
-    //while(fread(temp, sizeof(char), BLOCK_SIZE, open_raw) == BLOCK_SIZE)
-    while(1)
+    while(fread(temp, sizeof(char), BLOCK_SIZE, open_raw) == BLOCK_SIZE)
     {
-        fread(temp, sizeof(char), BLOCK_SIZE, open_raw);
         // find begining of a jpg file
         if(isJPG(temp))
         {
@@ -76,11 +74,12 @@ int main(int argc, char* argv[])
             while(!isJPG(temp));
             //fclose(open_jpg);
             
-            if(fread(temp, sizeof(char), BLOCK_SIZE, open_raw) != BLOCK_SIZE)
-                break;
+            // if(fread(temp, sizeof(char), BLOCK_SIZE, open_raw) != BLOCK_SIZE)
+            //     break;
         }
         //else go back to while and keep reading
     }
+    
     fclose(open_raw);
     
     return 0;
