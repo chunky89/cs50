@@ -60,12 +60,12 @@ int main(int argc, char* argv[])
                 open_jpg = fopen(title, "w");
             }
             // not first jpg
-            // else
-            // {
-            //     fclose(open_jpg);
-            //     sprintf(title, "%03d.jpg", curr_jpg);
-            //     open_jpg = fopen(title, "w");
-            // }
+            else
+            {
+                fclose(open_jpg);
+                sprintf(title, "%03d.jpg", curr_jpg);
+                open_jpg = fopen(title, "w");
+            }
             
             do
             {
@@ -74,8 +74,10 @@ int main(int argc, char* argv[])
                 fread(temp,sizeof(char), BLOCK_SIZE, open_raw);
             }
             while(!isJPG(temp));
-            fclose(open_jpg);
-            break;
+            //fclose(open_jpg);
+            
+            if(fread(temp, sizeof(char), BLOCK_SIZE, open_raw) != BLOCK_SIZE)
+                break;
         }
         //else go back to while and keep reading
     }
