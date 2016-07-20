@@ -12,7 +12,7 @@
 
 int main(int argc, char* argv[])
 {
-    ensure proper usage
+    //ensure proper usage
     if (argc != 3)
     {
         printf("Usage: ./enlarge infile outfile\n");
