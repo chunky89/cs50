@@ -83,6 +83,9 @@ int main(int argc, char* argv[])
         }
         //else go back to while and keep reading
     }
+    // close any remaining files
+    if(open_jpg != NULL)
+        fclose(open_jpg);
     fclose(open_raw);
     return 0;
 }
