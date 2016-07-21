@@ -25,7 +25,6 @@ int main(int argc, char* argv[])
      * 5. Detect the end of the file
     **/
     
-    
     // file pointer used to open and write a new jpg file
     FILE* open_jpg = NULL;
     // buffer to hold the current 512 bytes
@@ -36,18 +35,17 @@ int main(int argc, char* argv[])
     int curr_jpg = -1;
     
     FILE* open_raw = fopen("card.raw", "r");
-    
     if(open_raw == NULL)
     {
         printf("Could not open card.raw.\n");
         return 1;
     }
     
-    // while it is not end of the memory card(it can still read 512 bytes)
+    // while it is not end of the memory card (it can still read 512 bytes)
     while(fread(temp, sizeof(char), BLOCK_SIZE, open_raw) == BLOCK_SIZE)
     {
         // find begining of a jpg file
-        if(isJPG(temp))
+        CONTINUE:if(isJPG(temp))
         {
             curr_jpg++;
             // first jpg found
@@ -60,6 +58,7 @@ int main(int argc, char* argv[])
             // not first jpg
             else
             {
+                // close the previous jpg file
                 fclose(open_jpg);
                 sprintf(title, "%03d.jpg", curr_jpg);
                 open_jpg = fopen(title, "w");
@@ -71,20 +70,27 @@ int main(int argc, char* argv[])
                 fwrite(temp,sizeof(char), BLOCK_SIZE, open_jpg);
                 fread(temp,sizeof(char), BLOCK_SIZE, open_raw);
             }
-            while(!isJPG(temp));
-            //fclose(open_jpg);
-            
-            // if(fread(temp, sizeof(char), BLOCK_SIZE, open_raw) != BLOCK_SIZE)
-            //     break;
+            while(!isJPG(temp) && !feof(open_raw));
+
+            /**when the last JPG is written, the end of file is reached, 
+             * the while loop quits, then it goto CONTINUE label, it tests whether
+             * the current block has JPG signiture, return false, then the if quits,
+             * and the control goes back to the outest while, test whether the fread still
+             * read full block (512 bytes), it will return false (since the end of file is reached),
+             * then the outest while loop quits, program ends.
+            **/
+            goto CONTINUE;
         }
         //else go back to while and keep reading
     }
-    
     fclose(open_raw);
-    
     return 0;
 }
 
+/**
+ * this function checks whether a block is a JPG signiture,
+ * return true if it is, false otherwise.
+**/
 bool isJPG(unsigned char *buf)
 {
     if(buf[0] == 0xff && buf[1] == 0xd8 && buf[2] == 0xff)
@@ -96,6 +102,5 @@ bool isJPG(unsigned char *buf)
             return true;
         } 
     }
-    
     return false;
 }
