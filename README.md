@@ -6,7 +6,7 @@ Harvard University's introduction to the intellectual enterprises of computer sc
 
 CS50x teaches students how to think algorithmically and solve problems efficiently. Topics include abstraction, algorithms, data structures, encapsulation, resource management, security, software engineering, and web development. Languages include C, PHP, and JavaScript plus SQL, CSS, and HTML. Problem sets inspired by real-world domains of biology, cryptography, finance, forensics, and gaming.
 
-You are expected to submit nine problem sets and a final project.
+Students are expected to submit nine problem sets and a final project.
 
 ## Syllabus
 
