@@ -14,6 +14,8 @@
 #define LENGTH_OF_ENCRYPTED_TEXT 13
 
 
+// come back and try to implement the brute force attack(way to generate all combination of a string)
+
 int letterCounter[8];
 char validCharacters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890!@#$%^&*()_+[]{}:;<>,./?'";
 char bruteString[9];  // One more to null terminate.
