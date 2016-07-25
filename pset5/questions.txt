@@ -1,11 +1,55 @@
-0.  TODO
-1.  TODO
-2.  TODO
-3.  TODO
-4.  TODO
-5.  TODO
-6.  TODO
-7.  TODO
-8.  TODO
-9.  TODO
-10. TODO
+0.  What is pneumonoultramicroscopicsilicovolcanoconiosis?
+
+An artificial long word said to mean a lung disease caused by inhaling very fine ash and sand dust.
+
+1.  According to its man page, what does getrusage do?
+
+The function getrusage and the data type struct rusage are used to examine the resource usage of a 
+process. They are declared in sys/resource.h.
+
+2.  Per that same man page, how many members are in a variable of type struct rusage?
+
+struct	rusage {
+ 	struct timeval ru_utime; /* user CPU time used */
+ 	struct timeval ru_stime; /* system CPU time used */
+ 	long ru_maxrss; /* maximum resident set size */
+ 	long ru_ixrss;  /* integral shared memory size */
+ 	long ru_idrss;  /* integral unshared data size */
+ 	long ru_isrss;	/* integral unshared stack size */
+ 	long ru_minflt;	/* page reclaims (soft page faults) */
+ 	long ru_majflt;	/* page faults (hard page faults) */
+ 	long ru_nswap;	/* swaps */
+ 	long ru_inblock; /* block input operations */
+ 	long ru_oublock; /* block output operations */
+ 	long ru_msgsnd;	 /* IPC messages sent */
+ 	long ru_msgrcv; /* IPC messages received */
+ 	long ru_nsignals; /* signals received */
+ 	long ru_nvcsw; /* voluntary context switches */
+ 	long ru_nivcsw; /* involuntary context switches */
+};
+There are 16 members in a variable of type struct rusage.
+
+3.  Why do you think we pass before and after by reference (instead of by value) to calculate, 
+even though we’re not changing their contents?
+
+Because of the size of the structure is relatively large. If we pass by value, a whole copy of the structure
+will be generated during the funtion call and waste of resources. If we instead pass by reference, the orginal
+structure will be passed, because we are not changing anything, the system resource will therefore be saved.
+
+4.  Explain as precisely as possible, in a paragraph or more, how main goes about reading words from a file. 
+In other words, convince us that you indeed understand how that function’s for loop works.
+
+5.  Why do you think we used fgetc to read each word’s characters one at a time rather than use fscanf with a 
+format string like "%s" to read whole words at a time? Put another way, what problems might arise by relying 
+on fscanf alone?
+
+6.  Why do you think we declared the parameters for check and load as const?
+
+7.  What data structure(s) did you use to implement your spell-checker? Be sure not to leave your answer at 
+just "hash table," "trie," or the like. Expound on what’s inside each of your "nodes."
+
+8.  How slow was your code the first time you got it working correctly?
+
+9.  What kinds of changes, if any, did you make to your code in order to improve its performance?
+
+10. Do you feel that your code has any bottlenecks that you were not able to chip away at?
