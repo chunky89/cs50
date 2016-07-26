@@ -43,7 +43,15 @@ In other words, convince us that you indeed understand how that function’s for
 format string like "%s" to read whole words at a time? Put another way, what problems might arise by relying 
 on fscanf alone?
 
+fgetc is a more effective tool for examining 1 character at a time, to check that it is a valid letter. Using 
+fscanf will have problem in checking if every letter in the string is valid because it scans the string rather
+than individual character.
+
 6.  Why do you think we declared the parameters for check and load as const?
+
+These are pointers to a constant character. These pointers cannot change the values that they are pointing to. 
+This is useful for functions like load and check whose job is not to change the elements in the WORD/DICTIONARY
+array, but only to read them.
 
 7.  What data structure(s) did you use to implement your spell-checker? Be sure not to leave your answer at 
 just "hash table," "trie," or the like. Expound on what’s inside each of your "nodes."
