@@ -12,12 +12,19 @@
 
 #include "dictionary.h"
 
+// global pointer for other function to access the dictionary
+dict d;
+
 /**
  * Returns true if word is in dictionary else false.
  */
 bool check(const char* word)
 {
     // TODO
+    dict d_for_check = d;
+    int index = hash(word[0]);
+    if(searchList(d_for_check->letter[index], word))
+        return true;
     return false;
 }
 
@@ -35,7 +42,7 @@ bool load(const char* dictionary)
      * 4. return true
     **/
     
-    dict d = createDictionary(); 
+    d = createDictionary(); 
     FILE *fp = fopen(dictionary, "r");
     assert(fp != NULL);
     // temporary storage
@@ -43,9 +50,14 @@ bool load(const char* dictionary)
     /* assumes no word exceeds length of 45 */
     while (fscanf(fp, " %1023s", x) == 1) {
         // load it to the data structure
+        int index = hash(x[0]);
+        d->letter[index] = insertNode(d->letter[index], createNode(x));
+        d->n++;
     }
+    
+    fclose(fp);
 
-    return false;
+    return true;
 }
 
 /**
@@ -54,7 +66,9 @@ bool load(const char* dictionary)
 unsigned int size(void)
 {
     // TODO
-    return 0;
+    dict d_for_size = d;
+    
+    return d_for_size->n;
 }
 
 /**
@@ -63,7 +77,15 @@ unsigned int size(void)
 bool unload(void)
 {
     // TODO
-    return false;
+    dict d_for_unload = d;
+    
+    for(int i = 0; i < NUMBER_OF_ALPHABETS; i++)
+    {
+        freeList(d_for_unload->letter[i]);
+    }
+    free(d_for_unload);
+    
+    return true;
 }
 
 int hash(int letter)
@@ -71,7 +93,7 @@ int hash(int letter)
     return letter - 'a';    
 }
 
-link create_node(const char *word)
+link createNode(const char *word)
 {
     // this function accepts a word and create a node with this word
     link newNode = malloc(sizeof(struct node));
@@ -115,15 +137,44 @@ link insertNode(link head, link node)
 dict createDictionary(void)
 {
     // allocate memory for an array of linked list
-    dict newDict = malloc(NUMBER_OF_ALPHABETS * sizeof(struct dictNode));
+    dict newDict = malloc(sizeof(struct dictNode));
     assert(newDict != NULL);
     
-    // initialize the node pointer and size
+    // initialize the node pointers
     for(int i = 0; i<NUMBER_OF_ALPHABETS; i++)
     {
-        newDict[i].letter = NULL;
-        newDict[i].n = 0;
+        newDict->letter[i] = NULL;
     }
+    // initialize the size
+    newDict->n = 0;
     
     return newDict;
+}
+
+bool searchList(link head, const char* word)
+{
+    link cursor = head;
+    while(cursor != NULL)
+    {
+        if(strcmp(cursor->word, word) == 0)
+            return true;
+        else
+            cursor = cursor->next;
+    }
+    return false;
+}
+
+void freeList(link head)
+{
+    
+    // cursor pointer
+    link cursor = head;
+    // temporary storage
+    link temp = head;
+    while(cursor != NULL)
+    {
+        temp = cursor;
+        cursor = cursor->next;
+        free(temp);
+    }
 }

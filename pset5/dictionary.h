@@ -33,14 +33,13 @@ struct node
 /**
  * Data structure of the dictionary - an array of linked list
  
- * For each dictionary node, it contains the number of words belongs
- * to a particular buckets and a linked list
+ * For each dictionary node, it contains the number of words in dictionary
 **/
 typedef struct dictNode* dict;
 struct dictNode
 {
-    int n;  // keep track of number of words
-    link letter;  // an array of linked list
+    int n;  // keep track of number of words in the dictionary
+    link letter[NUMBER_OF_ALPHABETS];  // an array of linked list
 };
 
 
@@ -84,5 +83,16 @@ link insertNode(link head, link node);
  * Create a dictionary data structure and initialize it. Return a pointer to this dictionary. 
 **/
 dict createDictionary(void);
+
+/**
+ * Search the list for word, return true if the word is in the list and false otherwise.
+**/
+bool searchList(link head, const char* word);
+
+/**
+ * Free the linked list
+**/
+void freeList(link head);
+
 
 #endif // DICTIONARY_H
