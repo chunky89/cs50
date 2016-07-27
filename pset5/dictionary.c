@@ -53,9 +53,10 @@ bool check(const char* word)
 {
     // TODO
     //dict d_for_check = d;
-    int index = hash(word[0]);
-    if(searchList(d->letter[index], word))
-        return true;
+    
+    // int index = hash(word[0]);
+    // if(searchList(d->letter[index], word))
+    //     return true;
     return false;
 }
 
@@ -155,28 +156,28 @@ dict createDictionary(void)
 bool searchList(link head, const char* word)
 {
     // bug bug bug!!!!!
-    // link cursor = head;
-    // while(cursor != NULL)
-    // {
-    //     if(strcmp(cursor->word, word) == 0)
-    //         return true;
-    //     else
-    //         cursor = cursor->next;
-    // }
+    link cursor = head;
+    while(cursor != NULL)
+    {
+        if(strcmp(cursor->word, word) == 0)
+            return true;
+            
+        cursor = cursor->next;
+    }
+    
     return false;
 }
 
 void freeList(link head)
 {
     
-    // cursor pointer
-    link cursor = head;
     // temporary storage
-    //link temp = head;
-    while(cursor != NULL)
+    link temp;
+    
+    while(head != NULL)
     {
-        link temp = cursor;
-        cursor = cursor->next;
+        temp = head;
+        head = head->next;
         free(temp);
     }
 }
