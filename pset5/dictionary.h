@@ -33,8 +33,6 @@ struct node
 
 /**
  * Data structure of the dictionary - an array of linked list
- 
- * For each dictionary node, it contains the number of words in dictionary
 **/
 typedef struct dictNode* dict;
 struct dictNode
@@ -87,7 +85,7 @@ dict createDictionary(void);
 
 /**
  * Search the list for word, return true if the word is in the list and false otherwise.
- * This version is case-INSENSITIVE.
+ * This version is case-INSENSITIVE
 **/
 bool searchList(link head, const char* word);
 

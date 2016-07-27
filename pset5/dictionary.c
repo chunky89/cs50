@@ -36,6 +36,7 @@ bool load(const char* dictionary)
     /* assumes no word exceeds length of 45 */
     while (fscanf(fp, " %45s", x) == 1) {
         // load it to the data structure
+        x[strlen(x)] = '\0';
         int index = hash(x[0]);
         d->letter[index] = insertNode(d->letter[index], createNode(x));
         d->n++;
@@ -49,14 +50,18 @@ bool load(const char* dictionary)
 /**
  * Returns true if word is in dictionary else false.
  */
-bool check(const char* word)
+bool check(const char *word)
 {
     // TODO
     //dict d_for_check = d;
     
-    // int index = hash(word[0]);
-    // if(searchList(d->letter[index], word))
-    //     return true;
+    char temp_dest[strlen(word)+1];
+    strcpy(temp_dest, word);
+    
+    int index = hash(temp_dest[0]);
+    //printf("index = %d\n", index);
+    if(searchList(d->letter[index], temp_dest))
+        return true;
     return false;
 }
 
@@ -66,9 +71,6 @@ bool check(const char* word)
 unsigned int size(void)
 {
     // TODO
-    //dict d_for_size = d;
-    
-    //return 0;
     return d->n;
 }
 
@@ -92,7 +94,12 @@ bool unload(void)
 
 int hash(int letter)
 {
-    return letter - 'a';    
+    if(letter >= 'A' && letter <= 'Z')
+        return letter - 'A';
+    else if(letter >= 'a' && letter <= 'z')
+        return letter - 'a';    
+
+    return -1;
 }
 
 link createNode(const char *word)
