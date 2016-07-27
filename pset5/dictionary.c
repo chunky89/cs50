@@ -8,25 +8,11 @@
  */
 
 #include <stdbool.h>
-#include <stdio.h>
 
 #include "dictionary.h"
 
 // global pointer for other function to access the dictionary
-dict d;
-
-/**
- * Returns true if word is in dictionary else false.
- */
-bool check(const char* word)
-{
-    // TODO
-    dict d_for_check = d;
-    int index = hash(word[0]);
-    if(searchList(d_for_check->letter[index], word))
-        return true;
-    return false;
-}
+dict d = NULL;
 
 /**
  * Loads dictionary into memory.  Returns true if successful else false.
@@ -48,7 +34,7 @@ bool load(const char* dictionary)
     // temporary storage
     char x[LENGTH+1];
     /* assumes no word exceeds length of 45 */
-    while (fscanf(fp, " %1023s", x) == 1) {
+    while (fscanf(fp, " %45s", x) == 1) {
         // load it to the data structure
         int index = hash(x[0]);
         d->letter[index] = insertNode(d->letter[index], createNode(x));
@@ -61,14 +47,28 @@ bool load(const char* dictionary)
 }
 
 /**
+ * Returns true if word is in dictionary else false.
+ */
+bool check(const char* word)
+{
+    // TODO
+    //dict d_for_check = d;
+    int index = hash(word[0]);
+    if(searchList(d->letter[index], word))
+        return true;
+    return false;
+}
+
+/**
  * Returns number of words in dictionary if loaded else 0 if not yet loaded.
  */
 unsigned int size(void)
 {
     // TODO
-    dict d_for_size = d;
+    //dict d_for_size = d;
     
-    return d_for_size->n;
+    //return 0;
+    return d->n;
 }
 
 /**
@@ -77,15 +77,16 @@ unsigned int size(void)
 bool unload(void)
 {
     // TODO
-    dict d_for_unload = d;
+    //dict d_for_unload = d;
     
     for(int i = 0; i < NUMBER_OF_ALPHABETS; i++)
     {
-        freeList(d_for_unload->letter[i]);
+        freeList(d->letter[i]);
     }
-    free(d_for_unload);
+    free(d);
     
     return true;
+    //return false;
 }
 
 int hash(int letter)
@@ -137,30 +138,31 @@ link insertNode(link head, link node)
 dict createDictionary(void)
 {
     // allocate memory for an array of linked list
-    dict newDict = malloc(sizeof(struct dictNode));
-    assert(newDict != NULL);
+    d = malloc(sizeof(struct dictNode));
+    assert(d != NULL);
     
     // initialize the node pointers
     for(int i = 0; i<NUMBER_OF_ALPHABETS; i++)
     {
-        newDict->letter[i] = NULL;
+        d->letter[i] = NULL;
     }
     // initialize the size
-    newDict->n = 0;
+    d->n = 0;
     
-    return newDict;
+    return d;
 }
 
 bool searchList(link head, const char* word)
 {
-    link cursor = head;
-    while(cursor != NULL)
-    {
-        if(strcmp(cursor->word, word) == 0)
-            return true;
-        else
-            cursor = cursor->next;
-    }
+    // bug bug bug!!!!!
+    // link cursor = head;
+    // while(cursor != NULL)
+    // {
+    //     if(strcmp(cursor->word, word) == 0)
+    //         return true;
+    //     else
+    //         cursor = cursor->next;
+    // }
     return false;
 }
 
@@ -170,10 +172,10 @@ void freeList(link head)
     // cursor pointer
     link cursor = head;
     // temporary storage
-    link temp = head;
+    //link temp = head;
     while(cursor != NULL)
     {
-        temp = cursor;
+        link temp = cursor;
         cursor = cursor->next;
         free(temp);
     }

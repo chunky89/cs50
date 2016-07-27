@@ -11,6 +11,7 @@
 #define DICTIONARY_H
 
 #include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -86,6 +87,7 @@ dict createDictionary(void);
 
 /**
  * Search the list for word, return true if the word is in the list and false otherwise.
+ * This version is case-INSENSITIVE.
 **/
 bool searchList(link head, const char* word);
 
