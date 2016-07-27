@@ -36,7 +36,7 @@ bool load(const char* dictionary)
     /* assumes no word exceeds length of 45 */
     while (fscanf(fp, " %45s", x) == 1) {
         // load it to the data structure
-        x[strlen(x)] = '\0';
+        //x[strlen(x)] = '\0';
         int index = hash(x[0]);
         d->letter[index] = insertNode(d->letter[index], createNode(x));
         d->n++;
@@ -57,6 +57,10 @@ bool check(const char *word)
     
     char temp_dest[strlen(word)+1];
     strcpy(temp_dest, word);
+    
+    for(int i = 0; temp_dest[i]; i++){
+        temp_dest[i] = tolower(temp_dest[i]);
+    }
     
     int index = hash(temp_dest[0]);
     //printf("index = %d\n", index);
@@ -98,7 +102,7 @@ int hash(int letter)
         return letter - 'A';
     else if(letter >= 'a' && letter <= 'z')
         return letter - 'a';    
-
+    // else return error
     return -1;
 }
 
