@@ -63,6 +63,10 @@ unsigned int size(void);
  */
 bool unload(void);
 
+/* THE FOLLOWING IS THE HELPER FUNCTIONS THAT HELPS TO IMPLEMENT DICTIONARY DATA STRUCTURE
+ *****************************************************************************************
+*/
+
 /**
  * Generate corresponding index for a letter, return 0 if the letter is 'a'
  * return 1 if the letter is 'b' and so on.
@@ -75,7 +79,7 @@ int hash(int letter);
 link createNode(const char *word);
 
 /**
- * Insert the node to the head of the linked list. Return the new head of the linked list.
+ * Insert the node to the sorted linked list. Return the new head of the linked list.
 **/
 link insertNode(link head, link node);
 

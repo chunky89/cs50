@@ -11,7 +11,7 @@
 
 #include "dictionary.h"
 
-// global pointer for other function to access the dictionary
+// global pointer for other functions to access the dictionary
 dict d = NULL;
 
 /**
@@ -53,7 +53,12 @@ bool load(const char* dictionary)
 bool check(const char *word)
 {
     // TODO
-    //dict d_for_check = d;
+    /**
+     * 0. create a duplicate of word since word pointers to a constant that cannot be modified
+     * 1. convert the duplicate to lower case, make it case-insensitive, per specification
+     * 2. hash the starting letter to the correct bucket(linked list)
+     * 3. search in the correponding bucket
+    **/
     
     char temp_dest[strlen(word)+1];
     strcpy(temp_dest, word);
@@ -75,6 +80,7 @@ bool check(const char *word)
 unsigned int size(void)
 {
     // TODO
+    // Simply return the variable in the struct
     return d->n;
 }
 
@@ -84,8 +90,10 @@ unsigned int size(void)
 bool unload(void)
 {
     // TODO
-    //dict d_for_unload = d;
-    
+    /**
+     * 0. free all the linked lists by iteration
+     * 1. free the dictionary data structure
+    **/ 
     for(int i = 0; i < NUMBER_OF_ALPHABETS; i++)
     {
         freeList(d->letter[i]);
@@ -93,7 +101,6 @@ bool unload(void)
     free(d);
     
     return true;
-    //return false;
 }
 
 int hash(int letter)
@@ -120,11 +127,6 @@ link createNode(const char *word)
 
 link insertNode(link head, link node)
 {
-    // node->next = head;
-    // head = node;
-    
-    // return head;
-    
     link next_node = head;
     link prev_node = NULL;
     
@@ -166,7 +168,6 @@ dict createDictionary(void)
 
 bool searchList(link head, const char* word)
 {
-    // bug bug bug!!!!!
     link cursor = head;
     while(cursor != NULL)
     {

@@ -56,6 +56,12 @@ array, but only to read them.
 7.  What data structure(s) did you use to implement your spell-checker? Be sure not to leave your answer at 
 just "hash table," "trie," or the like. Expound on what’s inside each of your "nodes."
 
+I defined a dictionary data structure that has two variables:
+-- size, which keeps track of the number of words in the dictionary totally
+-- letter, which is an array of 26 linked lists to store all alphabet words.
+
+Each node in the linked list containds the word(string) and the pointer to the next node.
+
 8.  How slow was your code the first time you got it working correctly?
 
 9.  What kinds of changes, if any, did you make to your code in order to improve its performance?
