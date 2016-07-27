@@ -64,6 +64,10 @@ Each node in the linked list containds the word(string) and the pointer to the n
 
 8.  How slow was your code the first time you got it working correctly?
 
+The total time in completing the program is around 5s.
+
 9.  What kinds of changes, if any, did you make to your code in order to improve its performance?
+
+Can try another data structure such as tries, to improve the searching efficiency.
 
 10. Do you feel that your code has any bottlenecks that you were not able to chip away at?
