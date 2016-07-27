@@ -152,18 +152,18 @@ link insertNode(link head, link node)
 dict createDictionary(void)
 {
     // allocate memory for an array of linked list
-    d = malloc(sizeof(struct dictNode));
-    assert(d != NULL);
+    dict newDict = malloc(sizeof(struct dictNode));
+    assert(newDict != NULL);
     
     // initialize the node pointers
     for(int i = 0; i<NUMBER_OF_ALPHABETS; i++)
     {
-        d->letter[i] = NULL;
+        newDict->letter[i] = NULL;
     }
     // initialize the size
-    d->n = 0;
+    newDict->n = 0;
     
-    return d;
+    return newDict;
 }
 
 bool searchList(link head, const char* word)
