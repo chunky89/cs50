@@ -446,14 +446,34 @@ char* htmlspecialchars(const char* s)
 char* indexes(const char* path)
 {
     // TODO
-    /*
-    if( access(path, F_OK ) != -1 ) {
-    // file exists
-    } else {
-    // file doesn't exist
+    
+    // path for html if found
+    char* ret_path_html = malloc(sizeof(strlen(path) + strlen("/index.html") + 1));
+    strcpy(ret_path_html, path);
+    strcat(ret_path_html, "/index.html");
+   
+    // path for php
+    char* ret_path_php = malloc(sizeof(strlen(path) + strlen("/index.php") + 1));
+    strcpy(ret_path_php, path);
+    strcat(ret_path_php, "/index.php");
+    
+    if(access(ret_path_html, F_OK ) != -1 ) 
+    {
+        // html file exists
+        free(ret_path_php);
+        return ret_path_html;
     }
-    */
-    return NULL;
+    else if(access(ret_path_php, F_OK ) != -1)  
+    {
+        // php file exists
+        free(ret_path_html);
+        return ret_path_php;
+    }
+    else 
+    {
+        // file doesn't exist
+        return NULL;
+    }
 }
 
 /**

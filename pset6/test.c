@@ -2,6 +2,7 @@
 #include <string.h>
 #include <ctype.h>
 
+// test lookup function
 const char* lookup(const char* path)
 {
     // TODO
