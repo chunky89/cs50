@@ -722,19 +722,25 @@ bool parse(const char* line, char* abs_path, char* query)
     // get the copy of the request-line in order to manipulate it
     char *linecopy = malloc(sizeof(strlen(line)+1));
     strcpy(linecopy, line);
+    const char ch = ' '; //white space
+
     
     // get the first white space
-    char *pos_bfmethod = strchr(linecopy, ' ');
+    // try to understand it first!!!!
+    char *pos_bfmethod = strchr(linecopy, ch);
     // string that stores method
     char method[pos_bfmethod-linecopy];
     // copy the substring into method
     strncpy(method,linecopy,pos_bfmethod-linecopy);
+    //printf("pos-pos1 = %ld", pos_bfmethod-linecopy);
     // null-terminate the method
     method[pos_bfmethod-linecopy] = '\0';    
     
+    printf("method: %s\n", method);
+    
     // bug bug bug!!!
     // get the second white space
-    char *pos_bftarget = strchr(pos_bfmethod, ' ');
+    char *pos_bftarget = strchr(pos_bfmethod+1, ch);
     // string that stores target
     char request_target[pos_bftarget-pos_bfmethod];
     printf("pos_bftarget-pos_bfmethod = %ld\n", pos_bftarget-pos_bfmethod); // this is zero actually!
@@ -744,19 +750,17 @@ bool parse(const char* line, char* abs_path, char* query)
     request_target[pos_bftarget-pos_bfmethod] = '\0';
     
     // get \r\n
-    /*
-    char *pos_bfCRLF = strstr(pos_bftarget+1, "\r\n");
+    char *pos_bfCRLF = strstr(pos_bftarget, "\r\n");
     // string that stores HTTP version
     char http_ver[pos_bfCRLF-pos_bftarget];
     // copy the substring into HTTP version
     strncpy(http_ver, pos_bftarget,pos_bfCRLF-pos_bftarget);
     // null terminate the target
-    request_target[pos_bfCRLF-pos_bftarget-1] = '\0';
-    */
+    request_target[pos_bfCRLF-pos_bftarget] = '\0';
     
-    //printf("")
-    //printf("-----%s\n",http_ver);
-    //printf("------%s\n", request_target);
+    
+    printf("http_ver: %s\n",http_ver);
+    //printf("request_target: %s\n", request_target);
     if(strcmp(method, "GET"))
     {
         error(405);
@@ -770,7 +774,6 @@ bool parse(const char* line, char* abs_path, char* query)
     /*
     if(strcmp(http_ver,"HTTP/1.1"))
     {
-        //printf("---------%s\n", http_ver);
         error(505);
         return false;
     }
