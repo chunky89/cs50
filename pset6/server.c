@@ -452,7 +452,7 @@ char* indexes(const char* path)
     strcpy(ret_path_html, path);
     strcat(ret_path_html, "/index.html");
    
-    // path for php
+    // path for php if found
     char* ret_path_php = malloc(sizeof(strlen(path) + strlen("/index.php") + 1));
     strcpy(ret_path_php, path);
     strcat(ret_path_php, "/index.php");
@@ -638,7 +638,33 @@ void list(const char* path)
 bool load(FILE* file, BYTE** content, size_t* length)
 {
     // TODO
-    return false;
+    
+    /* initialize content and its length */
+    *content = NULL;
+    *length = 0;
+    
+    /* Get the number of bytes */
+    fseek(file, 0L, SEEK_END);
+    size_t numbytes = ftell(file);
+    *length = numbytes;
+    
+    /* reset the file position indicator to 
+    the beginning of the file */
+    fseek(file, 0L, SEEK_SET);	
+ 
+    /* grab sufficient memory for the 
+    buffer to hold the text */
+    *content = calloc(numbytes, sizeof(BYTE));	
+ 
+    /* memory error */
+    if(content == NULL)
+        return 1;
+ 
+    /* copy all the text into the buffer */
+    fread(*content, sizeof(BYTE), numbytes, file);
+    
+    fclose(file);
+    return true;
 }
 
 /**
