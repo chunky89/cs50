@@ -718,7 +718,72 @@ const char* lookup(const char* path)
 bool parse(const char* line, char* abs_path, char* query)
 {
     // TODO
-    error(501);
+    
+    // get the copy of the request-line in order to manipulate it
+    char *linecopy = malloc(sizeof(strlen(line)+1));
+    strcpy(linecopy, line);
+    
+    // get the first white space
+    char *pos_bfmethod = strchr(linecopy, ' ');
+    // string that stores method
+    char method[pos_bfmethod-linecopy];
+    // copy the substring into method
+    strncpy(method,linecopy,pos_bfmethod-linecopy);
+    // null-terminate the method
+    method[pos_bfmethod-linecopy] = '\0';    
+    
+    // bug bug bug!!!
+    // get the second white space
+    char *pos_bftarget = strchr(pos_bfmethod, ' ');
+    // string that stores target
+    char request_target[pos_bftarget-pos_bfmethod];
+    printf("pos_bftarget-pos_bfmethod = %ld\n", pos_bftarget-pos_bfmethod); // this is zero actually!
+    // copy the substring into request-target
+    strncpy(request_target, pos_bfmethod, pos_bftarget-pos_bfmethod);
+    // null terminate the target
+    request_target[pos_bftarget-pos_bfmethod] = '\0';
+    
+    // get \r\n
+    /*
+    char *pos_bfCRLF = strstr(pos_bftarget+1, "\r\n");
+    // string that stores HTTP version
+    char http_ver[pos_bfCRLF-pos_bftarget];
+    // copy the substring into HTTP version
+    strncpy(http_ver, pos_bftarget,pos_bfCRLF-pos_bftarget);
+    // null terminate the target
+    request_target[pos_bfCRLF-pos_bftarget-1] = '\0';
+    */
+    
+    //printf("")
+    //printf("-----%s\n",http_ver);
+    //printf("------%s\n", request_target);
+    if(strcmp(method, "GET"))
+    {
+        error(405);
+        return false;
+    }
+    if(strncmp(request_target,"/", 1))
+    {
+        error(501);
+        return false;
+    }
+    /*
+    if(strcmp(http_ver,"HTTP/1.1"))
+    {
+        //printf("---------%s\n", http_ver);
+        error(505);
+        return false;
+    }
+    */
+    //char single_quote[1] =;
+    if(strchr(request_target, '"')!=NULL)
+    {
+        error(400);
+        return false;
+    }
+    
+    
+    //error(501);
     return false;
 }
 
