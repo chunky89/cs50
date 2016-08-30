@@ -745,6 +745,7 @@ bool parse(const char* line, char* abs_path, char* query)
         error(400);
         return false;
     }
+    
     // string that stores target
     char request_target[pos_bftarget-pos_bfmethod-1];
     //printf("pos_bftarget-pos_bfmethod = %ld\n", pos_bftarget-pos_bfmethod); // this is zero actually!
@@ -780,9 +781,9 @@ bool parse(const char* line, char* abs_path, char* query)
     // request_target[pos_bfCRLF-pos_bftarget-1] = '\0';
     
     
-    //printf("------http_ver: %s\n",http_ver);
-    
-    //printf("request_target: %s\n", request_target);
+    printf("http_ver: %s\n",http_ver);
+    printf("method: %s\n", method);
+    printf("request_target: %s\n", request_target);
     
     
     if(strcmp(method, "GET"))
@@ -822,6 +823,7 @@ bool parse(const char* line, char* abs_path, char* query)
     // return value of absolute path
     //abs_path = ret_abs;
     strcpy(abs_path, ret_abs);
+    
     // check if the query part is empty
     if(strlen(question_mark) == strlen(request_target))
     {
@@ -837,8 +839,9 @@ bool parse(const char* line, char* abs_path, char* query)
         
         return true;
     }
-    */
     
+    printf("~~%s\n",ret_abs);
+    */
     //error(501);
     return true;
 }
