@@ -724,43 +724,67 @@ bool parse(const char* line, char* abs_path, char* query)
     strcpy(linecopy, line);
     const char ch = ' '; //white space
 
-    
     // get the first white space
-    // try to understand it first!!!!
     char *pos_bfmethod = strchr(linecopy, ch);
+    if(pos_bfmethod == NULL)
+    {
+        error(400);
+        return false;
+    }    
     // string that stores method
     char method[pos_bfmethod-linecopy];
     // copy the substring into method
     strncpy(method,linecopy,pos_bfmethod-linecopy);
-    //printf("pos-pos1 = %ld", pos_bfmethod-linecopy);
     // null-terminate the method
     method[pos_bfmethod-linecopy] = '\0';    
     
-    printf("method: %s\n", method);
-    
-    // bug bug bug!!!
     // get the second white space
     char *pos_bftarget = strchr(pos_bfmethod+1, ch);
+    if(pos_bftarget == NULL)
+    {
+        error(400);
+        return false;
+    }
     // string that stores target
-    char request_target[pos_bftarget-pos_bfmethod];
-    printf("pos_bftarget-pos_bfmethod = %ld\n", pos_bftarget-pos_bfmethod); // this is zero actually!
+    char request_target[pos_bftarget-pos_bfmethod-1];
+    //printf("pos_bftarget-pos_bfmethod = %ld\n", pos_bftarget-pos_bfmethod); // this is zero actually!
     // copy the substring into request-target
-    strncpy(request_target, pos_bfmethod, pos_bftarget-pos_bfmethod);
+    strncpy(request_target, pos_bfmethod+1, pos_bftarget-pos_bfmethod-1);
     // null terminate the target
     request_target[pos_bftarget-pos_bfmethod] = '\0';
     
-    // get \r\n
-    char *pos_bfCRLF = strstr(pos_bftarget, "\r\n");
     // string that stores HTTP version
-    char http_ver[pos_bfCRLF-pos_bftarget];
-    // copy the substring into HTTP version
-    strncpy(http_ver, pos_bftarget,pos_bfCRLF-pos_bftarget);
-    // null terminate the target
-    request_target[pos_bfCRLF-pos_bftarget] = '\0';
+    char http_ver[9]; // "HTTP/1.1" or "HTTP/1.0"
+    // copy the rest of string into HTTP version
+    strcpy(http_ver, pos_bftarget+1);
+    // null-terminate the string
+    http_ver[8] = '\0';
+    
+    if(strstr(pos_bftarget, "\r\n") == NULL)
+    {
+        error(400);
+        return false;
+    }
+    
+    // // get \r\n
+    // char *pos_bfCRLF = strstr(pos_bftarget, "\r\n");
+    // // string that stores HTTP version
+    // char http_ver[pos_bfCRLF-pos_bftarget];
+    // //printf("%ld\n",pos_bfCRLF-pos_bftarget);
+
+    // // copy the substring into HTTP version, bug here!!
+    // strcpy(http_ver, pos_bftarget+1);
     
     
-    printf("http_ver: %s\n",http_ver);
+    // // null terminate the target
+    // request_target[pos_bfCRLF-pos_bftarget-1] = '\0';
+    
+    
+    //printf("------http_ver: %s\n",http_ver);
+    
     //printf("request_target: %s\n", request_target);
+    
+    
     if(strcmp(method, "GET"))
     {
         error(405);
@@ -771,13 +795,12 @@ bool parse(const char* line, char* abs_path, char* query)
         error(501);
         return false;
     }
-    /*
+    
     if(strcmp(http_ver,"HTTP/1.1"))
     {
         error(505);
         return false;
     }
-    */
     //char single_quote[1] =;
     if(strchr(request_target, '"')!=NULL)
     {
@@ -785,9 +808,39 @@ bool parse(const char* line, char* abs_path, char* query)
         return false;
     }
     
+    /*
+    char *question_mark = strchr(request_target, '?');
+    
+    if(question_mark == NULL)
+    {
+        // the question mark is not presented
+        strcpy(query,"");
+    }
+    char ret_abs[question_mark-request_target-1];
+    strncpy(ret_abs, question_mark+1, question_mark-request_target-1);
+    ret_abs[question_mark-request_target] = '\0';
+    // return value of absolute path
+    //abs_path = ret_abs;
+    strcpy(abs_path, ret_abs);
+    // check if the query part is empty
+    if(strlen(question_mark) == strlen(request_target))
+    {
+        // a question mark is presented but doesn't contain anything
+        *query = '\0';
+        strcpy(query, "");
+        return true;
+    }
+    else
+    {
+        // a question mark is presented and the query is not empty
+        //query = question_mark+1;
+        
+        return true;
+    }
+    */
     
     //error(501);
-    return false;
+    return true;
 }
 
 /**
