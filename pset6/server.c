@@ -823,7 +823,6 @@ bool parse(const char* line, char* abs_path, char* query)
     char temp[LimitRequestLine + 1] ={'\0'};
     i = 0;
 
-    // something wrong with the following line!!
     //if there is a query
     if(strchr(buffer, '?'))
     {
