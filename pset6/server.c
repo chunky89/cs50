@@ -638,33 +638,59 @@ void list(const char* path)
 bool load(FILE* file, BYTE** content, size_t* length)
 {
     // TODO
+    //Because the file is opened via popen, you can't use fseek to determine the size of the file
+    //Yes you can't seek backwards from a pipe, only forwards. 
+    //A pipe in the computer is just like a pipe in real life, 
+    //the data flows only in one direction, and you can't change the flow.
+    // relevant link is here:
+    // http://cs50.stackexchange.com/questions/15749/help-with-php-files-in-pset6-load
     
-    /* initialize content and its length */
-    *content = NULL;
-    *length = 0;
+    // /* initialize content and its length */
+    // *content = NULL;
+    // *length = 0;
     
-    /* Get the number of bytes */
-    fseek(file, 0L, SEEK_END);
-    size_t numbytes = ftell(file);
-    *length = numbytes;
+    // /* Get the number of bytes */
+    // fseek(file, 0, SEEK_END);
+    // size_t numbytes = ftell(file);
+    // *length = numbytes;
     
-    /* reset the file position indicator to 
-    the beginning of the file */
-    fseek(file, 0L, SEEK_SET);	
+    // /* reset the file position indicator to 
+    // the beginning of the file */
+    // fseek(file, 0, SEEK_SET);	
  
-    /* grab sufficient memory for the 
-    buffer to hold the text */
-    *content = calloc(numbytes, sizeof(BYTE));	
- 
-    /* memory error */
-    if(content == NULL)
-        return 1;
- 
-    // something wrong with the following line
-    /* copy all the text into the buffer */
-    fread(*content, sizeof(BYTE), numbytes, file);
+    // /* grab sufficient memory for the 
+    // buffer to hold the text */
+    // BYTE *buffer = (BYTE *)malloc(numbytes);	
+    // /* memory error */
+    // if(buffer == NULL)
+    //     return -1;
+    // /* copy all the text into the buffer */
+    // fread(buffer, sizeof(BYTE), numbytes, file);
+    // *content = buffer;
+    // fclose(file);
+    // return true;
+
+    //integer variable for the for loop
+    BYTE* data = malloc(sizeof(BYTE));
+    if(data == NULL) 
+    {
+        return false; 
+    }
+
+    int i = 0;
+    // read file
+    for (int c = fgetc(file); c != EOF; c = fgetc(file))
+    {
+        data[i] = (BYTE) c;    // stores in dynamically allocated memory
+        i++;
+        data = (BYTE*) realloc(data, sizeof(BYTE) * (i+1)); // increase buffer
+    }
+
+    *content = data; // stores the address of the first of those bytes
+    *length = i;     // stores the number of bytes
+    //printf("Data: %s\n", *content);     // debugging - this works
+    //printf("Length: %zu\n", *length);   // debugging - this works
     
-    fclose(file);
     return true;
 }
 
@@ -774,7 +800,7 @@ bool parse(const char* line, char* abs_path, char* query)
     }
 
     
-    // keeps track of path to store, no more space except a question mark IF PRESENT
+    // keeps track of path to store
     int i = 0, j = 0;
     // when it encounters the "?" or " "(the space before HTTP version check ? first), 
     // the logic will break out of the loop
