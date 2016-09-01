@@ -47,6 +47,6 @@ const char* lookup(const char* path)
 
 int main(void)
 {
-    printf("%s\n", lookup("/home/cat.CSs"));
+    printf("%s\n", lookup("/home/cat.exe"));
     return 0;
 }

@@ -660,6 +660,7 @@ bool load(FILE* file, BYTE** content, size_t* length)
     if(content == NULL)
         return 1;
  
+    // something wrong with the following line
     /* copy all the text into the buffer */
     fread(*content, sizeof(BYTE), numbytes, file);
     
@@ -719,130 +720,107 @@ bool parse(const char* line, char* abs_path, char* query)
 {
     // TODO
     
-    // get the copy of the request-line in order to manipulate it
-    char *linecopy = malloc(sizeof(strlen(line)+1));
-    strcpy(linecopy, line);
-    const char ch = ' '; //white space
+    // strcpy DOES copy the end of character ('\0')
+    
+    // creates buffer to store line
+    char buffer[LimitRequestLine + 1];
 
-    // get the first white space
-    char *pos_bfmethod = strchr(linecopy, ch);
-    if(pos_bfmethod == NULL)
-    {
-        error(400);
-        return false;
-    }    
-    // string that stores method
-    char method[pos_bfmethod-linecopy];
-    // copy the substring into method
-    strncpy(method,linecopy,pos_bfmethod-linecopy);
-    // null-terminate the method
-    method[pos_bfmethod-linecopy] = '\0';    
-    
-    // get the second white space
-    char *pos_bftarget = strchr(pos_bfmethod+1, ch);
-    if(pos_bftarget == NULL)
-    {
-        error(400);
-        return false;
-    }
-    
-    // string that stores target
-    char request_target[pos_bftarget-pos_bfmethod-1];
-    //printf("pos_bftarget-pos_bfmethod = %ld\n", pos_bftarget-pos_bfmethod); // this is zero actually!
-    // copy the substring into request-target
-    strncpy(request_target, pos_bfmethod+1, pos_bftarget-pos_bfmethod-1);
-    // null terminate the target
-    request_target[pos_bftarget-pos_bfmethod] = '\0';
-    
-    // string that stores HTTP version
-    char http_ver[9]; // "HTTP/1.1" or "HTTP/1.0"
-    // copy the rest of string into HTTP version
-    strcpy(http_ver, pos_bftarget+1);
-    // null-terminate the string
-    http_ver[8] = '\0';
-    
-    if(strstr(pos_bftarget, "\r\n") == NULL)
-    {
-        error(400);
-        return false;
-    }
-    
-    // // get \r\n
-    // char *pos_bfCRLF = strstr(pos_bftarget, "\r\n");
-    // // string that stores HTTP version
-    // char http_ver[pos_bfCRLF-pos_bftarget];
-    // //printf("%ld\n",pos_bfCRLF-pos_bftarget);
+    // checks for 1st space and stores the rest of the line, starting from the request-target
+    char* ptr = strchr(line, ' ');
+    strcpy(buffer, ptr + 1);
 
-    // // copy the substring into HTTP version, bug here!!
-    // strcpy(http_ver, pos_bftarget+1);
+    // terminates buffer with \0
+    buffer[strlen(buffer)] = '\0';
+
+    printf("buffer: %s\n", buffer);
+
+    // creates buffer to store version
+    char version[LimitRequestLine + 1];
+
+    // checks for 1st space and stores the rest of the line
+    ptr = strchr(buffer, ' ');
+    strcpy(version, ptr + 1);
     
-    
-    // // null terminate the target
-    // request_target[pos_bfCRLF-pos_bftarget-1] = '\0';
-    
-    
-    printf("http_ver: %s\n",http_ver);
-    printf("method: %s\n", method);
-    printf("request_target: %s\n", request_target);
-    
-    
-    if(strcmp(method, "GET"))
+    // terminates version with \0
+    version[strlen(version)] = '\0';
+    printf("version: %s\n", version);
+
+    // method error checking
+    if(strncmp(line, "GET ", 4) != 0)
     {
         error(405);
         return false;
     }
-    if(strncmp(request_target,"/", 1))
+
+    // target error checking
+    if(buffer[0] != '/')
     {
         error(501);
         return false;
     }
-    
-    if(strcmp(http_ver,"HTTP/1.1"))
-    {
-        error(505);
-        return false;
-    }
-    //char single_quote[1] =;
-    if(strchr(request_target, '"')!=NULL)
+
+    // target error checking
+    if(strchr(buffer, '"'))
     {
         error(400);
         return false;
     }
-    
-    /*
-    char *question_mark = strchr(request_target, '?');
-    
-    if(question_mark == NULL)
+
+    // version error checking
+    if(strcasecmp(version, "HTTP/1.1\r\n") != 0)
     {
-        // the question mark is not presented
-        strcpy(query,"");
+        error(505);
+        return false;
     }
-    char ret_abs[question_mark-request_target-1];
-    strncpy(ret_abs, question_mark+1, question_mark-request_target-1);
-    ret_abs[question_mark-request_target] = '\0';
-    // return value of absolute path
-    //abs_path = ret_abs;
-    strcpy(abs_path, ret_abs);
+
     
-    // check if the query part is empty
-    if(strlen(question_mark) == strlen(request_target))
+    // keeps track of path to store, no more space except a question mark IF PRESENT
+    int i = 0, j = 0;
+    // when it encounters the "?" or " "(the space before HTTP version check ? first), 
+    // the logic will break out of the loop
+    while(buffer[i] != '?' && buffer[i] != ' ')
     {
-        // a question mark is presented but doesn't contain anything
-        *query = '\0';
-        strcpy(query, "");
-        return true;
+        i++;
+        j++;
     }
+    // this will print "?"
+    //printf("%c<-\n", buffer[i]);
+    //printf("%d\n", j);
+    
+    // copies path to abs_path
+    strncpy(abs_path, buffer, j);
+
+    // null terminates path
+    abs_path[j] = '\0';
+    printf("abs_path: %s\n", abs_path);
+
+    char temp[LimitRequestLine + 1] ={'\0'};
+    i = 0;
+
+    // something wrong with the following line!!
+    //if there is a query
+    if(strchr(buffer, '?'))
+    {
+        ptr = strchr(buffer, '?')+1;
+        
+        // the space before HTTP version
+        while(*ptr != ' ') 
+        {
+            // copy it character by character
+            temp[i] = *ptr;
+            i++;
+            ptr++;
+        }
+        strcpy(query, temp);
+        query[strlen(query)] = '\0';
+    }
+    //no query(no question mark is presented)
     else
     {
-        // a question mark is presented and the query is not empty
-        //query = question_mark+1;
-        
-        return true;
+        query[0] = '\0';
     }
+    printf("query: %s<-%d\n", query, query[0]);
     
-    printf("~~%s\n",ret_abs);
-    */
-    //error(501);
     return true;
 }
 
