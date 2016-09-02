@@ -676,15 +676,15 @@ bool load(FILE* file, BYTE** content, size_t* length)
     // fclose(file);
     // return true;
 
-    //integer variable for the for loop
+    
     BYTE* data = malloc(sizeof(BYTE));
     if(data == NULL) 
     {
         return false; 
     }
-
+    //integer variable for the for loop
     int i = 0;
-    // read file
+    // read file byte by byte
     for (int c = fgetc(file); c != EOF; c = fgetc(file))
     {
         data[i] = (BYTE) c;    // stores in dynamically allocated memory
