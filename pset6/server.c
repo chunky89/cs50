@@ -446,28 +446,34 @@ char* htmlspecialchars(const char* s)
 char* indexes(const char* path)
 {
     // TODO
+    // Lession learnt: don't have muscle memory that type sizeof after malloc
+    // Think what it means!!!
     
     // path for html if found
-    char* ret_path_html = malloc(sizeof(strlen(path) + strlen("/index.html") + 1));
+    char* ret_path_html = malloc(strlen(path) + strlen("index.html") + 1);
     strcpy(ret_path_html, path);
-    strcat(ret_path_html, "/index.html");
-   
+    strcat(ret_path_html, "index.html");
+    // debugging
+    //printf("ret_path_html: %s\n", ret_path_html);
     // path for php if found
-    char* ret_path_php = malloc(sizeof(strlen(path) + strlen("/index.php") + 1));
+    char* ret_path_php = malloc(strlen(path) + strlen("index.php") + 1);
     strcpy(ret_path_php, path);
-    strcat(ret_path_php, "/index.php");
+    strcat(ret_path_php, "index.php");
+    // degugging
+    //printf("ret_path_php: %s\n", ret_path_php);
     
-    if(access(ret_path_html, F_OK ) != -1 ) 
-    {
-        // html file exists
-        free(ret_path_php);
-        return ret_path_html;
-    }
-    else if(access(ret_path_php, F_OK ) != -1)  
+    
+    if(access(ret_path_php, F_OK ) != -1)  
     {
         // php file exists
         free(ret_path_html);
         return ret_path_php;
+    }
+    else if(access(ret_path_html, F_OK ) != -1 ) 
+    {
+        // html file exists
+        free(ret_path_php);
+        return ret_path_html;
     }
     else 
     {
@@ -749,7 +755,7 @@ bool parse(const char* line, char* abs_path, char* query)
     // strcpy DOES copy the end of character ('\0')
     
     // creates buffer to store line
-    char buffer[LimitRequestLine + 1];
+    char buffer[LimitRequestLine + 1] = {'\0'};
 
     // checks for 1st space and stores the rest of the line, starting from the request-target
     char* ptr = strchr(line, ' ');
@@ -758,10 +764,11 @@ bool parse(const char* line, char* abs_path, char* query)
     // terminates buffer with \0
     buffer[strlen(buffer)] = '\0';
 
-    printf("buffer: %s\n", buffer);
+    //debugging
+    //printf("buffer: %s\n", buffer);
 
     // creates buffer to store version
-    char version[LimitRequestLine + 1];
+    char version[LimitRequestLine + 1] = {'\0'};
 
     // checks for 1st space and stores the rest of the line
     ptr = strchr(buffer, ' ');
@@ -769,7 +776,8 @@ bool parse(const char* line, char* abs_path, char* query)
     
     // terminates version with \0
     version[strlen(version)] = '\0';
-    printf("version: %s\n", version);
+    // debugging
+    //printf("version: %s\n", version);
 
     // method error checking
     if(strncmp(line, "GET ", 4) != 0)
@@ -818,7 +826,8 @@ bool parse(const char* line, char* abs_path, char* query)
 
     // null terminates path
     abs_path[j] = '\0';
-    printf("abs_path: %s\n", abs_path);
+    //debugging
+    //printf("abs_path: %s\n", abs_path);
 
     char temp[LimitRequestLine + 1] ={'\0'};
     i = 0;
@@ -844,7 +853,8 @@ bool parse(const char* line, char* abs_path, char* query)
     {
         query[0] = '\0';
     }
-    printf("query: %s<-%d\n", query, query[0]);
+    //debugging
+    //printf("query: %s<-%d\n", query, query[0]);
     
     return true;
 }
