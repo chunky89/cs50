@@ -8,12 +8,12 @@ char* indexes(const char* path)
 {
     // TODO
 // path for html if found
-    char* ret_path_html = malloc(sizeof(strlen(path) + strlen("/index.html") + 1));
+    char* ret_path_html = malloc(strlen(path) + strlen("/index.html") + 1);
     strcpy(ret_path_html, path);
     strcat(ret_path_html, "/index.html");
    
     // path for php
-    char* ret_path_php = malloc(sizeof(strlen(path) + strlen("/index.php") + 1));
+    char* ret_path_php = malloc(strlen(path) + strlen("/index.php") + 1);
     strcpy(ret_path_php, path);
     strcat(ret_path_php, "/index.php");
     
