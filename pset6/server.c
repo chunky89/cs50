@@ -685,7 +685,9 @@ bool load(FILE* file, BYTE** content, size_t* length)
     //integer variable for the for loop
     int i = 0;
     // read file byte by byte
-    for (int c = fgetc(file); c != EOF; c = fgetc(file))
+    
+    int c; // for EOF purpose, must declare it as int rather than char(or BYTE)
+    while((c = fgetc(file)) != EOF)
     {
         data[i] = (BYTE) c;    // stores in dynamically allocated memory
         i++;
