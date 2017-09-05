@@ -1,5 +1,10 @@
 # This is CS50x
 
+Course link: (https://www.edx.org/course/introduction-computer-science-harvardx-cs50x)
+
+## Instructors
+Professor [David Malan](http://cs.harvard.edu/malan/)
+
 ## About this course
 
 Harvard University's introduction to the intellectual enterprises of computer science and the art of programming for majors and non-majors alike, with or without prior programming experience. An entry-level course taught by David J. Malan.
