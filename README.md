@@ -2,7 +2,7 @@
 
 Course link: (https://www.edx.org/course/introduction-computer-science-harvardx-cs50x)
 
-## Instructors
+## Instructor
 Professor [David Malan](http://cs.harvard.edu/malan/)
 
 ## About this course
