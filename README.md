@@ -1,4 +1,4 @@
-# This is CS50x
+# This is CS50x (Finished of 26 Nov, 2018)
 
 Course link: (https://www.edx.org/course/introduction-computer-science-harvardx-cs50x)
 
